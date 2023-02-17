@@ -9,36 +9,30 @@ namespace Car_App.Controllers
     public class AvtoController : ControllerBase
     {
         [HttpGet]
-        public ActionResult GetAvto()
+        public ActionResult GetAvto([FromQuery]int count)
         {
-            string[] avto = { "Volkswagen, Golf, 2015", "BMW, 520i, 2011", "Renault, Clio, 2013" };
+            Avto[] avto =
+            {
+                new() { Title = "Citroen C-Elysee Seduction HDi 92 BVM"},
+                new() { Title = "Renault Twingo 1.2 16V .TEMPOMAT.."},
+                new() { Title = "Audi Q3 35 TFSI S-Tronic Advanced 150KM COCKPIT Full LED" }
 
-            if (avto.Any())
-                return NotFound();
-            return Ok(avto);
+            };
+            
+            return Ok(avto.Take(count));
         }
 
         [HttpPost]
-        public ActionResult PostAvto([FromBody] string carString)
+        public ActionResult CreateNewAvto([FromBody] Avto newAvto)
 
         {
+            // validate and save to database
+            bool badThingsHappened = false;
 
-            string[] carData = carString.Split(',');
-
-            if (carData.Length != 3)
-            {
-                return BadRequest("The request body should contain a comma-separated string with the car make, model, and year");
-            }
-
-            var newCar = new Avto { Make = carData[0], Model = carData[1], Year = int.Parse(carData[2]) };
-
-            // Add the new car to your database or data store
-            // ...
-
-            // Return the newly created car with a 201 Created status code
-            return CreatedAtAction(nameof(GetAvto), new { id = newCar.Id }, newCar);
+            if (badThingsHappened)
+                return BadRequest();
+            return Created("", newAvto);
         }
-
 
         [HttpDelete("{id}")]
         public ActionResult DeleteAvto(string id)
