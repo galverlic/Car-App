@@ -40,8 +40,8 @@ namespace Car_App.Controllers
         }
 
 
-        [HttpDelete]
-        public ActionResult DeleteAvto()
+        [HttpDelete("{id}")]
+        public ActionResult DeleteAvto(string id)
         {
             bool badThingsHappened = false;
 

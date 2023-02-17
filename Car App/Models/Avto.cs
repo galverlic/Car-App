@@ -9,8 +9,10 @@
         public int Mileage { get; set; }
         public string FuelType { get; set; }
         public int Power { get; set; }
-        
-    // test remove me adfdsfsdf
+        public int Power3 { get; set; }
+
+
+        // test remove me adfdsfsdf
 
     }
 }
