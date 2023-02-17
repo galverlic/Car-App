@@ -2,7 +2,7 @@
 
 namespace Car_App.Models
 {
-    public record Avto
+    public class Avto
     {
         [Key]
         public Guid Id { get; init; } = Guid.NewGuid();
@@ -14,7 +14,7 @@ namespace Car_App.Models
         public string FuelType { get; init; }
         public int Power { get; init; }
 
-
+        
 
   }
 }
