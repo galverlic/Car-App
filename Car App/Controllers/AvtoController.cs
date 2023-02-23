@@ -2,7 +2,7 @@
 using Car_App.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Car_App.Controllers
 {
@@ -47,7 +47,7 @@ namespace Car_App.Controllers
             return car;
         }
 
-
+        [HttpGet("{count}")]
         public ActionResult GetAvto([FromQuery]int count)
         {
             Avto[] avto =
