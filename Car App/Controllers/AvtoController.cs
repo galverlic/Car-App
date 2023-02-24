@@ -1,5 +1,6 @@
-﻿using Car_App.Context;
-using Car_App.Models;
+﻿using Car_App.Controllers.DTOModels;
+using Car_App.Data.Context;
+using Car_App.Data.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -62,14 +63,25 @@ namespace Car_App.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateNewAvto([FromBody] Avto newAvto)
+        public async Task<ActionResult> CreateNewAvto([FromBody] AvtoDTO newAvto)
 
         {
-            // validate and save to database
-            bool badThingsHappened = false;
+            Avto Item = new Avto
+            {
+                Title = newAvto.Title,
+                Make = newAvto.Make,
+                Model = newAvto.Model,
+                Year = newAvto.Year,
+                Mileage = newAvto.Mileage,
+                FuelType = newAvto.FuelType,
+                Power = newAvto.Power
 
-            if (badThingsHappened)
-                return BadRequest();
+            };
+
+            await _dbContext.Cars.AddAsync(Item);
+            await _dbContext.SaveChangesAsync();
+            
+            
             return Created("", newAvto);
         }
 

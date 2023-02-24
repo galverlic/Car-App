@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Car_App.Models
+namespace Car_App.Data.Models
 {
     public class Avto
     {
@@ -14,7 +14,7 @@ namespace Car_App.Models
         public string FuelType { get; init; }
         public int Power { get; init; }
 
-        
 
-  }
+
+    }
 }
