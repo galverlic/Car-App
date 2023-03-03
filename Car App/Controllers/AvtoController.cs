@@ -1,9 +1,8 @@
 ﻿using Car_App.Controllers.DTOModels;
-using Car_App.Data.Context;
 using Car_App.Data.Models;
-using Microsoft.AspNetCore.Http;
+using Car_App.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace Car_App.Controllers
 {
@@ -12,11 +11,11 @@ namespace Car_App.Controllers
     public class AvtoController : ControllerBase
     {
 
-        private readonly DatabaseContext _dbContext;
+        private readonly IAvtoService _avtoService;
 
-        public AvtoController(DatabaseContext dbContext)
+        public AvtoController(IAvtoService avtoService)
         {
-            _dbContext = dbContext;
+            _avtoService = avtoService;
         }
 
         // GET: api/Cars
@@ -24,21 +23,18 @@ namespace Car_App.Controllers
         // getter search  po vseh avtih
         [HttpGet]
 
-        public async Task<ActionResult<IEnumerable<Avto>>> GetCars()
-            {
-            if (_dbContext.Cars == null)
 
-            {
-                return NotFound();
-            }
-            return await _dbContext.Cars.ToListAsync();
+
+        public async Task<ActionResult<IEnumerable<Avto>>> GetCars()
+        {
+            return Ok(await _avtoService.GetAllCarsAsync());
 
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Avto>> GetCar(int id)
+        [HttpGet("GetCarById/{id}")]
+        public async Task<ActionResult<Avto>> GetCar(Guid id)
         {
-            var car = await _dbContext.Cars.FindAsync(id);
+            var car = await _avtoService.GetCarByIdAsync(id);
 
             if (car == null)
             {
@@ -48,8 +44,8 @@ namespace Car_App.Controllers
             return car;
         }
 
-        [HttpGet("{count}")]
-        public ActionResult GetAvto([FromQuery]int count)
+        [HttpGet("GetNumberOfCars/{count}")]
+        public ActionResult GetAvto([FromQuery] int count)
         {
             Avto[] avto =
             {
@@ -58,7 +54,7 @@ namespace Car_App.Controllers
                 new() { Title = "Audi Q3 35 TFSI S-Tronic Advanced 150KM COCKPIT Full LED"}
 
             };
-            
+
             return Ok(avto.Take(count));
         }
 
@@ -66,39 +62,39 @@ namespace Car_App.Controllers
         public async Task<ActionResult> CreateNewAvto([FromBody] AvtoDTO newAvto)
 
         {
-            Avto Item = new Avto
-            {
-                Title = newAvto.Title,
-                Make = newAvto.Make,
-                Model = newAvto.Model,
-                Year = newAvto.Year,
-                Mileage = newAvto.Mileage,
-                FuelType = newAvto.FuelType,
-                Power = newAvto.Power
 
-            };
+            await _avtoService.CreateNewAvtoAsync(newAvto);
 
-            await _dbContext.Cars.AddAsync(Item);
-            await _dbContext.SaveChangesAsync();
-            
-            
+
             return Created("", newAvto);
         }
-
-        [HttpDelete("{id}")]
-        public ActionResult DeleteAvto(string id)
+        [HttpDelete("Delete/{id}")]
+        public async Task<ActionResult> DeleteAvto(Guid id)
         {
-            bool badThingsHappened = false;
+            var car = await _avtoService.DeleteAvtoAsync(id);
+            if (car == true)
+            {
+                return Ok(car);
 
-            if (badThingsHappened)
-                return BadRequest();
+            }
+            else
+            {
+                return NotFound(HttpStatusCode.NotModified);
+            }
 
-            return NoContent();
+
         }
-            
-            
 
-            
-        
+        [HttpPut("Update/{id}")]
+        public async Task<ActionResult> UpdateAvto([FromBody] AvtoDTO newAvto, Guid id)
+        {
+            await _avtoService.UpdateAvtoAsync(id, newAvto);
+            return Ok(newAvto);
+        }
+
+
+
+
+
     }
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Car_App.Data.Context
+﻿namespace Car_App.Data.Context
 {
     //public class DatabaseInitializer : DropCreateDatabaseIfModelChanges<DatabaseContext>
     //{

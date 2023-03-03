@@ -5,14 +5,14 @@ namespace Car_App.Data.Models
     public class Avto
     {
         [Key]
-        public Guid Id { get; init; } = Guid.NewGuid();
-        public string Title { get; init; }
-        public string Make { get; init; }
-        public string Model { get; init; }
-        public int Year { get; init; }
-        public int Mileage { get; init; }
-        public string FuelType { get; init; }
-        public int Power { get; init; }
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public string Title { get; set; }
+        public string Make { get; set; }
+        public string Model { get; set; }
+        public int Year { get; set; }
+        public int Mileage { get; set; }
+        public string FuelType { get; set; }
+        public int Power { get; set; }
 
 
 

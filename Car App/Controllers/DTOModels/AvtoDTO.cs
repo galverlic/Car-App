@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Car_App.Controllers.DTOModels
+﻿namespace Car_App.Controllers.DTOModels
 {
     public class AvtoDTO
     {
