@@ -4,6 +4,7 @@ using Car_App.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Car_App.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230303103817_AddOwnerCarRelationship")]
+    partial class AddOwnerCarRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,6 +28,7 @@ namespace Car_App.Migrations
             modelBuilder.Entity("Car_App.Data.Models.Avto", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FuelType")
@@ -41,9 +45,6 @@ namespace Car_App.Migrations
                     b.Property<string>("Model")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("OwnerId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Power")
                         .HasColumnType("int");
@@ -66,6 +67,9 @@ namespace Car_App.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("CarId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("Dob")
                         .HasColumnType("datetime2");
 
@@ -81,29 +85,22 @@ namespace Car_App.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TelephoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("CarId");
 
                     b.ToTable("Owners");
                 });
 
-            modelBuilder.Entity("Car_App.Data.Models.Avto", b =>
+            modelBuilder.Entity("Car_App.Data.Models.Owner", b =>
                 {
-                    b.HasOne("Car_App.Data.Models.Owner", "Owner")
-                        .WithMany("Cars")
-                        .HasForeignKey("Id")
+                    b.HasOne("Car_App.Data.Models.Avto", "Car")
+                        .WithMany()
+                        .HasForeignKey("CarId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Owner");
-                });
-
-            modelBuilder.Entity("Car_App.Data.Models.Owner", b =>
-                {
-                    b.Navigation("Cars");
+                    b.Navigation("Car");
                 });
 #pragma warning restore 612, 618
         }

@@ -14,7 +14,7 @@ namespace Car_App.Data.Models
         public string FuelType { get; set; }
         public int Power { get; set; }
 
-
-
+        public virtual Owner Owner { get; set; }
+        public Guid OwnerId { get; set; }
     }
 }
