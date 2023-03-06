@@ -14,6 +14,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IAvtoService, AvtoService>();
+builder.Services.AddScoped<IOwnerService, OwnerService>();
+
 
 
 
