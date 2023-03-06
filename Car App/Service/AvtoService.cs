@@ -49,7 +49,8 @@ namespace Car_App.Services
                 Year = newAvto.Year,
                 Mileage = newAvto.Mileage,
                 FuelType = newAvto.FuelType,
-                Power = newAvto.Power
+                Power = newAvto.Power,
+                OwnerId = newAvto.OwnerId
             };
 
             await _dbContext.Cars.AddAsync(Item);

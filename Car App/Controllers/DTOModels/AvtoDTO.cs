@@ -9,5 +9,8 @@
         public int Mileage { get; init; }
         public string FuelType { get; init; }
         public int Power { get; init; }
+        public Guid OwnerId { get; set; }
+
+
     }
 }
