@@ -30,7 +30,6 @@ public class OwnerService : IOwnerService
             FirstName = newOwner.FirstName,
             LastName = newOwner.LastName,
             Emso = newOwner.Emso,
-            Dob = newOwner.Dob,
             TelephoneNumber = newOwner.TelephoneNumber
         };
 
@@ -74,7 +73,6 @@ public class OwnerService : IOwnerService
             owner.FirstName = newOwner.FirstName;
             owner.LastName = newOwner.LastName;
             owner.Emso = newOwner.Emso;
-            owner.Dob = newOwner.Dob;
             owner.TelephoneNumber = newOwner.TelephoneNumber;
 
             // remove existing cars

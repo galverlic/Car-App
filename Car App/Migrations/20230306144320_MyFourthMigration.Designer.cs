@@ -4,6 +4,7 @@ using Car_App.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Car_App.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230306144320_MyFourthMigration")]
+    partial class MyFourthMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,13 +49,12 @@ namespace Car_App.Migrations
                     b.Property<Guid>("OwnerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<double>("Power")
-                        .HasColumnType("float");
+                    b.Property<int>("Power")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Year")
                         .HasColumnType("int");
@@ -69,6 +71,9 @@ namespace Car_App.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Dob")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Emso")
                         .IsRequired()

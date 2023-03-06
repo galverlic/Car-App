@@ -41,6 +41,7 @@ namespace Car_App.Services
 
         public async Task CreateNewAvtoAsync(AvtoDTO newAvto)
         {
+            var newOwner = await _dbContext.Owners.FindAsync(newAvto.OwnerId);
             Avto Item = new Avto
             {
                 Title = newAvto.Title,
@@ -50,7 +51,7 @@ namespace Car_App.Services
                 Mileage = newAvto.Mileage,
                 FuelType = newAvto.FuelType,
                 Power = newAvto.Power,
-                OwnerId = newAvto.OwnerId
+                OwnerId = newOwner.Id
             };
 
             await _dbContext.Cars.AddAsync(Item);

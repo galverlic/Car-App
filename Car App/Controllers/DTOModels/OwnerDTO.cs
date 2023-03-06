@@ -6,7 +6,6 @@ public class OwnerDTO
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Emso { get; set; }
-    public DateTime Dob { get; set; }
     public List<Guid> CarIds { get; set; }
     public string TelephoneNumber { get; set; }
 }
