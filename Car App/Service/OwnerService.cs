@@ -15,7 +15,12 @@ public class OwnerService : IOwnerService
 
     public async Task<IEnumerable<Owner>> GetAllOwnersAsync()
     {
-        return await _dbContext.Owners.ToListAsync();
+        return await _dbContext.Owners.Include(o => o.Cars).ToListAsync();
+    }
+
+    public async Task<Owner> GetOwnerWithCarsByIdAsync(Guid id)
+    {
+        return await _dbContext.Owners.Include(o => o.Cars).FirstOrDefaultAsync(o => o.Id == id);
     }
 
     public async Task<Owner> GetOwnerByIdAsync(Guid id)

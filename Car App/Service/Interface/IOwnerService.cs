@@ -8,6 +8,8 @@ namespace Car_App.Service.Interface
     {
         public Task<IEnumerable<Owner>> GetAllOwnersAsync();
         public Task<Owner> GetOwnerByIdAsync(Guid id);
+        public Task<Owner> GetOwnerWithCarsByIdAsync(Guid ownerId);
+
         public Task CreateNewOwnerAsync(OwnerDTO newOwner);
         public Task<bool> DeleteOwnerAsync(Guid id);
         public Task<bool> UpdateOwnerAsync(Guid id, OwnerDTO newOwner);
