@@ -10,10 +10,10 @@ namespace Car_App.Data.Models
 
         public string Title { get; set; }
 
-        [StringLength(15, ErrorMessage = "The maximum length for the title is 20 characters!")]
+        [StringLength(15, ErrorMessage = "The maximum length for the make is 20 characters!")]
         public string Make { get; set; }
 
-        [StringLength(20, ErrorMessage = "The maximum length for the title is 20 characters!")]
+        [StringLength(20, ErrorMessage = "The maximum length for the model is 20 characters!")]
         public string Model { get; set; }
 
         [Range(1950, 2023, ErrorMessage = "The year must be between 1950 and 2023.")]
