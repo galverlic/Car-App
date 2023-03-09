@@ -105,6 +105,7 @@ public class OwnerService : IOwnerService
             return false;
         }
     }
+
     public async Task<IEnumerable<Avto>> GetCarsByOwnerIdAsync(Guid ownerId)
     {
         return await _dbContext.Cars.Where(c => c.OwnerId == ownerId).ToListAsync();

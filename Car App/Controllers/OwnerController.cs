@@ -59,9 +59,13 @@ namespace Car_App.Controllers
             var AvtoDTOs = owner.Cars.Select(car => new AvtoDTO
             {
                 //Id = car.Id,
+                Title = car.Title,
                 Make = car.Make,
                 Model = car.Model,
                 Year = car.Year,
+                Mileage = car.Mileage,
+                FuelType = car.FuelType,
+                Power = car.Power,
                 OwnerId = car.OwnerId
             }).ToList();
 
