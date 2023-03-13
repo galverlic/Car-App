@@ -42,7 +42,7 @@ public class OwnerService : IOwnerService
         {
             foreach (Guid carId in newOwner.CarIds)
             {
-                Avto car = await _dbContext.Cars.FindAsync(carId);
+                Car car = await _dbContext.Cars.FindAsync(carId);
                 if (car != null)
                 {
                     owner.Cars.Add(car);
@@ -88,7 +88,7 @@ public class OwnerService : IOwnerService
             {
                 foreach (Guid carId in newOwner.CarIds)
                 {
-                    Avto car = await _dbContext.Cars.FindAsync(carId);
+                    Car car = await _dbContext.Cars.FindAsync(carId);
                     if (car != null)
                     {
                         owner.Cars.Add(car);
@@ -106,7 +106,7 @@ public class OwnerService : IOwnerService
         }
     }
 
-    public async Task<IEnumerable<Avto>> GetCarsByOwnerIdAsync(Guid ownerId)
+    public async Task<IEnumerable<Car>> GetCarsByOwnerIdAsync(Guid ownerId)
     {
         return await _dbContext.Cars.Where(c => c.OwnerId == ownerId).ToListAsync();
     }

@@ -25,7 +25,7 @@ namespace Car_App.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Car_App.Models.Avto", b =>
+            modelBuilder.Entity("Car_App.Models.Car", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()

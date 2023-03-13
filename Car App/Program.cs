@@ -13,7 +13,7 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IAvtoService, AvtoService>();
+builder.Services.AddScoped<ICarService, CarService>();
 builder.Services.AddScoped<IOwnerService, OwnerService>();
 
 

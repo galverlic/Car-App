@@ -25,7 +25,7 @@ namespace Car_App.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Car_App.Data.Models.Avto", b =>
+            modelBuilder.Entity("Car_App.Data.Models.Car", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -93,7 +93,7 @@ namespace Car_App.Migrations
                     b.ToTable("Owners");
                 });
 
-            modelBuilder.Entity("Car_App.Data.Models.Avto", b =>
+            modelBuilder.Entity("Car_App.Data.Models.Car", b =>
                 {
                     b.HasOne("Car_App.Data.Models.Owner", "Owner")
                         .WithMany("Cars")

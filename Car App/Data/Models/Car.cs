@@ -2,7 +2,7 @@
 
 namespace Car_App.Data.Models
 {
-    public class Avto
+    public class Car
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();

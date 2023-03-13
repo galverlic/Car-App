@@ -25,7 +25,7 @@ namespace Car_App.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Car_App.Data.Models.Avto", b =>
+            modelBuilder.Entity("Car_App.Data.Models.Car", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -94,7 +94,7 @@ namespace Car_App.Migrations
 
             modelBuilder.Entity("Car_App.Data.Models.Owner", b =>
                 {
-                    b.HasOne("Car_App.Data.Models.Avto", "Car")
+                    b.HasOne("Car_App.Data.Models.Car", "Car")
                         .WithMany()
                         .HasForeignKey("CarId")
                         .OnDelete(DeleteBehavior.Cascade)

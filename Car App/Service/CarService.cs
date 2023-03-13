@@ -7,28 +7,28 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Car_App.Services
 {
-    public class AvtoService : IAvtoService
+    public class CarService : ICarService
     {
         private readonly DatabaseContext _dbContext;
 
-        public AvtoService(DatabaseContext dbContext)
+        public CarService(DatabaseContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<Avto>> GetAllCarsAsync()
+        public async Task<IEnumerable<Car>> GetAllCarsAsync()
         {
             return await _dbContext.Cars.ToListAsync();
         }
 
-        public async Task<Avto> GetCarByIdAsync(Guid id)
+        public async Task<Car> GetCarByIdAsync(Guid id)
         {
             return await _dbContext.Cars.FindAsync(id);
         }
 
-        public async Task<IEnumerable<Avto>> GetAvto([FromQuery] int count)
+        public async Task<IEnumerable<Car>> GetCar([FromQuery] int count)
         {
-            Avto[] avto =
+            Car[] avto =
             {
                 new() { Title = "Citroen C-Elysee Seduction HDi 92 BVM"},
                 new() { Title = "Renault Twingo 1.2 16V .TEMPOMAT.."},
@@ -39,10 +39,10 @@ namespace Car_App.Services
             return avto.Take(count);
         }
 
-        public async Task CreateNewAvtoAsync(AvtoDTO newAvto)
+        public async Task CreateNewCarAsync(CarDTO newAvto)
         {
             var newOwner = await _dbContext.Owners.FindAsync(newAvto.OwnerId);
-            Avto Item = new Avto
+            Car Item = new Car
             {
                 Title = newAvto.Title,
                 Make = newAvto.Make,
@@ -58,7 +58,7 @@ namespace Car_App.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<bool> DeleteAvtoAsync(Guid id)
+        public async Task<bool> DeleteCarAsync(Guid id)
         {
             var car = await _dbContext.Cars.FindAsync(id);
 
@@ -74,7 +74,7 @@ namespace Car_App.Services
             }
         }
 
-        public async Task<bool> UpdateAvtoAsync(Guid id, AvtoDTO newAvto)
+        public async Task<bool> UpdateCarAsync(Guid id, CarDTO newAvto)
         {
             var car = await _dbContext.Cars.FindAsync(id);
             if (car != null)

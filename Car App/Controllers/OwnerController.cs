@@ -10,7 +10,7 @@ namespace Car_App.Controllers
     public class OwnerController : ControllerBase
 
     {
-        private readonly IAvtoService _avtoService;
+        private readonly ICarService _avtoService;
 
         private readonly IOwnerService _ownerService;
         public OwnerController(IOwnerService ownerService)
@@ -47,7 +47,7 @@ namespace Car_App.Controllers
         // get a car by it's owner
 
         [HttpGet("{ownerId}/cars")]
-        public async Task<ActionResult<List<AvtoDTO>>> GetCarsByOwnerId(Guid ownerId)
+        public async Task<ActionResult<List<CarDTO>>> GetCarsByOwnerId(Guid ownerId)
         {
             var owner = await _ownerService.GetOwnerWithCarsByIdAsync(ownerId);
 
@@ -56,7 +56,7 @@ namespace Car_App.Controllers
                 return NotFound();
             }
 
-            var AvtoDTOs = owner.Cars.Select(car => new AvtoDTO
+            var AvtoDTOs = owner.Cars.Select(car => new CarDTO
             {
                 //Id = car.Id,
                 Title = car.Title,

@@ -13,6 +13,6 @@ namespace Car_App.Service.Interface
         public Task CreateNewOwnerAsync(OwnerDTO newOwner);
         public Task<bool> DeleteOwnerAsync(Guid id);
         public Task<bool> UpdateOwnerAsync(Guid id, OwnerDTO newOwner);
-        public Task<IEnumerable<Avto>> GetCarsByOwnerIdAsync(Guid ownerId);
+        public Task<IEnumerable<Car>> GetCarsByOwnerIdAsync(Guid ownerId);
     }
 }

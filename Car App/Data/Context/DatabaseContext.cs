@@ -6,7 +6,7 @@ namespace Car_App.Data.Context
     public class DatabaseContext : DbContext
     {
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
-        public DbSet<Avto> Cars { get; set; }
+        public DbSet<Car> Cars { get; set; }
         public DbSet<Owner> Owners { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
