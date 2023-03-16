@@ -28,6 +28,9 @@ namespace Car_App.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("Distance")
+                        .HasColumnType("int");
+
                     b.Property<string>("FuelType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -36,9 +39,6 @@ namespace Car_App.Migrations
                         .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
-
-                    b.Property<int>("Mileage")
-                        .HasColumnType("int");
 
                     b.Property<string>("Model")
                         .IsRequired()

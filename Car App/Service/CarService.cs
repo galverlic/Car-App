@@ -48,7 +48,7 @@ namespace Car_App.Services
                 Make = newAvto.Make,
                 Model = newAvto.Model,
                 Year = newAvto.Year,
-                Mileage = newAvto.Mileage,
+                Distance = newAvto.Distance,
                 FuelType = newAvto.FuelType,
                 Power = newAvto.Power,
                 OwnerId = newOwner.Id
@@ -83,7 +83,7 @@ namespace Car_App.Services
                 car.Make = newAvto.Make;
                 car.Model = newAvto.Model;
                 car.Year = newAvto.Year;
-                car.Mileage = newAvto.Mileage;
+                car.Distance = newAvto.Distance;
                 car.FuelType = newAvto.FuelType;
                 car.Power = newAvto.Power;
 

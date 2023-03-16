@@ -17,8 +17,8 @@ namespace Car_App.Controllers.DTOModels
 
         public int Year { get; init; }
 
-        [Range(0, 1000000, ErrorMessage = "The mileage should be between 0 and 1000000")]
-        public int Mileage { get; init; }
+        [Range(0, 1000000, ErrorMessage = "The distance driven should be between 0 and 1000000")]
+        public int Distance { get; init; }
 
         [RegularExpression("^(diesel|gasoline|hybrid|electric)$", ErrorMessage = "Fuel type must be diesel, gasoline, hybrid, or electric.")]
         public string FuelType { get; init; }

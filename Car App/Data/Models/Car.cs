@@ -20,7 +20,7 @@ namespace Car_App.Data.Models
         public int Year { get; set; }
 
         [Range(0, 1000000, ErrorMessage = "The mileage should be between 0 and 1000000")]
-        public int Mileage { get; set; }
+        public int Distance { get; set; }
 
         [RegularExpression("^(diesel|gasoline|hybrid|electric)$", ErrorMessage = "Fuel type must be diesel, gasoline, hybrid, or electric.")]
         public string FuelType { get; set; }

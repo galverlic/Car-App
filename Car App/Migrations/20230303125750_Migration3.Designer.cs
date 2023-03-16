@@ -38,7 +38,7 @@ namespace Car_App.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Mileage")
+                    b.Property<int>("Distance")
                         .HasColumnType("int");
 
                     b.Property<string>("Model")

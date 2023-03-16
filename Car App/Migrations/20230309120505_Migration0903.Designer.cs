@@ -40,7 +40,7 @@ namespace Car_App.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
-                    b.Property<int>("Mileage")
+                    b.Property<int>("Distance")
                         .HasColumnType("int");
 
                     b.Property<string>("Model")

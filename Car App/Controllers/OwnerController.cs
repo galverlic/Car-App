@@ -18,6 +18,7 @@ namespace Car_App.Controllers
             _ownerService = ownerService;
         }
 
+        //GET ALL OWNERS
         [HttpGet("owners")]
         public async Task<ActionResult<List<OwnerDTO>>> GetAllOwnersWithCars()
         {
@@ -44,7 +45,7 @@ namespace Car_App.Controllers
             return ownerDTOs;
         }
 
-        // get a car by it's owner
+        // GET A CAR BY IT'S OWNER'S ID
 
         [HttpGet("{ownerId}/cars")]
         public async Task<ActionResult<List<CarDTO>>> GetCarsByOwnerId(Guid ownerId)
@@ -63,7 +64,7 @@ namespace Car_App.Controllers
                 Make = car.Make,
                 Model = car.Model,
                 Year = car.Year,
-                Mileage = car.Mileage,
+                Distance = car.Distance,
                 FuelType = car.FuelType,
                 Power = car.Power,
                 OwnerId = car.OwnerId
@@ -75,7 +76,7 @@ namespace Car_App.Controllers
 
 
 
-        // CREATE OWNER
+        // CREATE NEW OWNER
         [HttpPost("CreateNewOwner")]
         public async Task<ActionResult> CreateNewOwner([FromBody] OwnerDTO newOwner)
         {
