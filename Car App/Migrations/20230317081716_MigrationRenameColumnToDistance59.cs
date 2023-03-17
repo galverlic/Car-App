@@ -5,7 +5,7 @@
 namespace Car_App.Migrations
 {
     /// <inheritdoc />
-    public partial class english : Migration
+    public partial class MigrationRenameColumnToDistance59 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

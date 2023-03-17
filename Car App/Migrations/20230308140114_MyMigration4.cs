@@ -38,7 +38,7 @@ namespace Car_App.Migrations
                 oldType: "nvarchar(max)");
 
             migrationBuilder.AlterColumn<string>(
-                name: "Emso",
+                name: "Emso3",
                 table: "Owners",
                 type: "nvarchar(13)",
                 maxLength: 13,
@@ -78,7 +78,7 @@ namespace Car_App.Migrations
                 oldMaxLength: 20);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Emso",
+                name: "Emso3",
                 table: "Owners",
                 type: "nvarchar(max)",
                 nullable: false,

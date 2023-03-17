@@ -36,7 +36,7 @@ namespace Car_App.Controllers
                     Id = owner.Id,
                     FirstName = owner.FirstName,
                     LastName = owner.LastName,
-                    Emso = owner.Emso,
+                    Emso = owner.Emso3,
                     TelephoneNumber = owner.TelephoneNumber,
                     CarIds = owner.Cars.Select(car => car.Id).ToList()
                 };
@@ -64,7 +64,7 @@ namespace Car_App.Controllers
                 Make = car.Make,
                 Model = car.Model,
                 Year = car.Year,
-                Distance = car.Distance,
+                Distance = (int)car.Distance,
                 FuelType = car.FuelType,
                 Power = car.Power,
                 OwnerId = car.OwnerId

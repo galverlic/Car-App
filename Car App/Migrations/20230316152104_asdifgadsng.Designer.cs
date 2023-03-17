@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Car_App.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230313135531_english")]
-    partial class english
+    [Migration("20230316152104_asdifgadsng")]
+    partial class asdifgadsng
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.3")
+                .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -31,6 +31,12 @@ namespace Car_App.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("Distance")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Distance7")
+                        .HasColumnType("int");
+
                     b.Property<string>("FuelType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -39,9 +45,6 @@ namespace Car_App.Migrations
                         .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
-
-                    b.Property<int>("Distance")
-                        .HasColumnType("int");
 
                     b.Property<string>("Model")
                         .IsRequired()
@@ -75,7 +78,7 @@ namespace Car_App.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Emso")
+                    b.Property<string>("Emso3")
                         .IsRequired()
                         .HasMaxLength(13)
                         .HasColumnType("nvarchar(13)");

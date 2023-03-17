@@ -14,7 +14,7 @@ namespace Car_App.Data.Models
         public string LastName { get; set; }
 
         [StringLength(13, MinimumLength = 13, ErrorMessage = "There should be 13 digits!")]
-        public string Emso { get; set; }
+        public string Emso3 { get; set; }
 
         public virtual List<Car> Cars { get; set; } = new List<Car>();
 
@@ -27,7 +27,7 @@ namespace Car_App.Data.Models
         {
             FirstName = firstName;
             LastName = lastName;
-            Emso = emso;
+            Emso3 = emso;
             TelephoneNumber = telephoneNumber;
         }
     }

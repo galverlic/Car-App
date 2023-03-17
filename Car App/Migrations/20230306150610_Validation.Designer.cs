@@ -73,7 +73,7 @@ namespace Car_App.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Emso")
+                    b.Property<string>("Emso3")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

@@ -34,7 +34,7 @@ public class OwnerService : IOwnerService
         {
             FirstName = newOwner.FirstName,
             LastName = newOwner.LastName,
-            Emso = newOwner.Emso,
+            Emso3 = newOwner.Emso,
             TelephoneNumber = newOwner.TelephoneNumber
         };
 
@@ -77,7 +77,7 @@ public class OwnerService : IOwnerService
         {
             owner.FirstName = newOwner.FirstName;
             owner.LastName = newOwner.LastName;
-            owner.Emso = newOwner.Emso;
+            owner.Emso3 = newOwner.Emso;
             owner.TelephoneNumber = newOwner.TelephoneNumber;
 
             // remove existing cars
