@@ -59,6 +59,12 @@ namespace Car_App.Migrations
                     b.Property<int>("Year")
                         .HasColumnType("int");
 
+                    b.Property<int>("YearOfFirstService")
+                        .HasColumnType("int");
+
+                    b.Property<int>("YearOfRegistration")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("OwnerId");
@@ -72,7 +78,7 @@ namespace Car_App.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Emso3")
+                    b.Property<string>("Emso")
                         .IsRequired()
                         .HasMaxLength(13)
                         .HasColumnType("nvarchar(13)");

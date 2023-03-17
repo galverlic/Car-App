@@ -28,6 +28,8 @@ namespace Car_App.Data.Models
         [Range(0, 1000, ErrorMessage = "The power should be between 0 and 1000 kW")]
         public double Power { get; set; }
 
+        public int YearOfRegistration { get; set; }
+        public int YearOfFirstService { get; set; }
         public virtual Owner Owner { get; set; }
         public Guid OwnerId { get; set; }
     }

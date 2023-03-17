@@ -73,7 +73,7 @@ namespace Car_App.Migrations
                     b.Property<DateTime>("Dob")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Emso3")
+                    b.Property<string>("Emso")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

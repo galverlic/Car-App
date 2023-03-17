@@ -14,6 +14,12 @@ namespace Car_App.Data.Context
                 .HasMany(a => a.Cars)
                 .WithOne(o => o.Owner)
                 .HasForeignKey(o => o.OwnerId);
+
+            modelBuilder.Entity<Owner>()
+                .HasMany(a => a.Cars)
+                .WithOne(o => o.Owner)
+                .HasForeignKey(o => o.OwnerId);
+
         }
 
 
