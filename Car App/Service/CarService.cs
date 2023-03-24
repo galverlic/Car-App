@@ -16,9 +16,31 @@ namespace Car_App.Services
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<Car>> GetAllCarsAsync()
+        public async Task<IEnumerable<Car>> GetAllCarsAsync(string make = null, int page = 1, int pageSize = 10)
         {
-            return await _dbContext.Cars.ToListAsync();
+            var query = _dbContext.Cars.AsQueryable();
+
+            if (!string.IsNullOrEmpty(make))
+            {
+                query = query.Where(c => c.Make == make);
+            }
+
+            var totalCount = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+
+            if (page < 1)
+            {
+                page = 1;
+            }
+
+            if (page > totalPages)
+            {
+                page = totalPages;
+            }
+
+            var cars = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            return cars;
         }
 
         public async Task<Car> GetCarByIdAsync(Guid id)

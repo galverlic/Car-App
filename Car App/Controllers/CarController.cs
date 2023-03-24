@@ -21,10 +21,13 @@ namespace Car_App.Controllers
 
         // getter search  po vseh avtih
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Car>>> GetCars()
+        public async Task<ActionResult<IEnumerable<Car>>> GetCars([FromQuery] string make, [FromQuery] PaginationParameters pagination)
         {
-            return Ok(await _avtoService.GetAllCarsAsync());
+            var cars = await _avtoService.GetAllCarsAsync(make, pagination.Page, pagination.PageSize);
+            return Ok(cars);
         }
+
+
 
         // getter find car by ID
         [HttpGet("GetCarById/{id}")]

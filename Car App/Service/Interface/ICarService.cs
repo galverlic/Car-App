@@ -7,7 +7,8 @@ namespace Car_App.Service.Interface
     public interface ICarService
     {
 
-        public Task<IEnumerable<Car>> GetAllCarsAsync();
+        public Task<IEnumerable<Car>> GetAllCarsAsync(string make = null, int page = 1, int pageSize = 10);
+
         public Task<Car> GetCarByIdAsync(Guid id);
 
         public Task<IEnumerable<Car>> GetCar([FromQuery] int count);
