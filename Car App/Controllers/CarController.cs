@@ -21,9 +21,17 @@ namespace Car_App.Controllers
 
         // getter search  po vseh avtih
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Car>>> GetCars([FromQuery] string make, [FromQuery] PaginationParameters pagination)
+        public async Task<ActionResult<IEnumerable<Car>>> GetCars([FromQuery] string make, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var cars = await _avtoService.GetAllCarsAsync(make, pagination.Page, pagination.PageSize);
+            var cars = await _avtoService.GetAllCarsAsync(make, page, pageSize);
+
+            var totalCount = await _avtoService.GetTotalCountAsync(make);
+            var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+
+            Response.Headers.Add("X-Total-Count", totalCount.ToString());
+            Response.Headers.Add("X-Total-Pages", totalPages.ToString());
+            Response.Headers.Add("X-Current-Page", page.ToString());
+
             return Ok(cars);
         }
 

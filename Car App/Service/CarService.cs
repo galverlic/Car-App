@@ -118,5 +118,19 @@ namespace Car_App.Services
                 return false;
             }
         }
+
+        public async Task<int> GetTotalCountAsync(string make = null)
+        {
+            var query = _dbContext.Cars.AsQueryable();
+
+            if (!string.IsNullOrEmpty(make))
+            {
+                query = query.Where(c => c.Make == make);
+            }
+
+            var totalCount = await query.CountAsync();
+
+            return totalCount;
+        }
     }
 }
