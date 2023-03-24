@@ -16,7 +16,7 @@ namespace Car_App.Services
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<Car>> GetAllCarsAsync(string make = null, int page = 1, int pageSize = 10)
+        public async Task<PagedResult<Car>> GetAllCarsAsync(PaginationParameters paginationParameters, string make = null)
         {
             var query = _dbContext.Cars.AsQueryable();
 
@@ -26,22 +26,32 @@ namespace Car_App.Services
             }
 
             var totalCount = await query.CountAsync();
-            var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+            var totalPages = (int)Math.Ceiling(totalCount / (double)paginationParameters.PageSize);
+            var hasNextPage = totalPages > paginationParameters.Page;
 
-            if (page < 1)
+            if (paginationParameters.Page < 1)
             {
-                page = 1;
+                paginationParameters.Page = 1;
             }
 
-            if (page > totalPages)
+            if (paginationParameters.Page > totalPages)
             {
-                page = totalPages;
+                paginationParameters.Page = totalPages;
             }
 
-            var cars = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+            var cars = await query.Skip((paginationParameters.Page - 1) * paginationParameters.PageSize).Take(paginationParameters.PageSize).ToListAsync();
 
-            return cars;
+            return new PagedResult<Car>()
+            {
+                Results = cars,
+                CurrentPage = paginationParameters.Page,
+                TotalPages = totalPages,
+                TotalCount = totalCount,
+                PageSize = paginationParameters.PageSize,
+                HasNextPage = hasNextPage
+            };
         }
+
 
         public async Task<Car> GetCarByIdAsync(Guid id)
         {

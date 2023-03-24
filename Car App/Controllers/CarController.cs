@@ -10,30 +10,27 @@ namespace Car_App.Controllers
     [ApiController]
     public class CarController : ControllerBase
     {
-        private readonly ICarService _avtoService;
+        private readonly ICarService _carService;
 
-        public CarController(ICarService avtoService)
+        public CarController(ICarService carService)
         {
-            _avtoService = avtoService;
+            _carService = carService;
         }
 
         // GET: api/Cars
 
         // getter search  po vseh avtih
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Car>>> GetCars([FromQuery] string make, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<ActionResult<PagedResult<Car>>> GetCars([FromQuery] string make, [FromQuery] PaginationParameters paginationParameters)
         {
-            var cars = await _avtoService.GetAllCarsAsync(make, page, pageSize);
+            var result = await _carService.GetAllCarsAsync(paginationParameters, make);
 
-            var totalCount = await _avtoService.GetTotalCountAsync(make);
-            var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
 
-            Response.Headers.Add("X-Total-Count", totalCount.ToString());
-            Response.Headers.Add("X-Total-Pages", totalPages.ToString());
-            Response.Headers.Add("X-Current-Page", page.ToString());
 
-            return Ok(cars);
+            return Ok(result);
         }
+
+
 
 
 
@@ -41,7 +38,7 @@ namespace Car_App.Controllers
         [HttpGet("GetCarById/{id}")]
         public async Task<ActionResult<Car>> GetCar(Guid id)
         {
-            var car = await _avtoService.GetCarByIdAsync(id);
+            var car = await _carService.GetCarByIdAsync(id);
 
             if (car == null)
             {
@@ -70,7 +67,7 @@ namespace Car_App.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateNewCar([FromBody] CarDTO newAvto)
         {
-            await _avtoService.CreateNewCarAsync(newAvto);
+            await _carService.CreateNewCarAsync(newAvto);
             return Created("", newAvto);
         }
 
@@ -78,7 +75,7 @@ namespace Car_App.Controllers
         [HttpDelete("Delete/{id}")]
         public async Task<ActionResult> DeleteCar(Guid id)
         {
-            var car = await _avtoService.DeleteCarAsync(id);
+            var car = await _carService.DeleteCarAsync(id);
             if (car == true)
             {
                 return Ok(car);
@@ -93,7 +90,7 @@ namespace Car_App.Controllers
         [HttpPut("Update/{id}")]
         public async Task<ActionResult> UpdateCar([FromBody] CarDTO newCar, Guid id)
         {
-            await _avtoService.UpdateCarAsync(id, newCar);
+            await _carService.UpdateCarAsync(id, newCar);
             return Ok(newCar);
         }
 
