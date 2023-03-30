@@ -21,18 +21,12 @@ namespace Car_App.Controllers
 
         // getter search  po vseh avtih
         [HttpGet]
-        public async Task<ActionResult<PagedResult<Car>>> GetCars([FromQuery] string make, [FromQuery] PaginationParameters paginationParameters)
+        public async Task<ActionResult<PagedResult<Car>>> GetCars([FromQuery] PaginationParameters paginationParameters, [FromQuery] CarFilter filter)
         {
-            var result = await _carService.GetAllCarsAsync(paginationParameters, make);
-
-
+            var result = await _carService.GetAllCarsAsync(paginationParameters, filter);
 
             return Ok(result);
         }
-
-
-
-
 
         // getter find car by ID
         [HttpGet("GetCarById/{id}")]
@@ -65,7 +59,7 @@ namespace Car_App.Controllers
 
         // create a new car
         [HttpPost]
-        public async Task<ActionResult> CreateNewCar([FromBody] CarDTO newAvto)
+        public async Task<ActionResult> CreateNewCar([FromBody] CarDto newAvto)
         {
             await _carService.CreateNewCarAsync(newAvto);
             return Created("", newAvto);
@@ -88,7 +82,7 @@ namespace Car_App.Controllers
 
         // update a car by it's ID
         [HttpPut("Update/{id}")]
-        public async Task<ActionResult> UpdateCar([FromBody] CarDTO newCar, Guid id)
+        public async Task<ActionResult> UpdateCar([FromBody] CarDto newCar, Guid id)
         {
             await _carService.UpdateCarAsync(id, newCar);
             return Ok(newCar);

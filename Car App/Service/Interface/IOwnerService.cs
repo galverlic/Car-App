@@ -6,13 +6,13 @@ namespace Car_App.Service.Interface
 {
     public interface IOwnerService
     {
-        public Task<IEnumerable<Owner>> GetAllOwnersAsync();
+        public Task<PagedResult<Owner>> GetAllOwnersAsync(PaginationParameters paginationParameteres, string firstName = null);
         public Task<Owner> GetOwnerByIdAsync(Guid id);
         public Task<Owner> GetOwnerWithCarsByIdAsync(Guid ownerId);
 
-        public Task CreateNewOwnerAsync(OwnerDTO newOwner);
+        public Task CreateNewOwnerAsync(OwnerDto newOwner);
         public Task<bool> DeleteOwnerAsync(Guid id);
-        public Task<bool> UpdateOwnerAsync(Guid id, OwnerDTO newOwner);
+        public Task<bool> UpdateOwnerAsync(Guid id, OwnerDto newOwner);
         public Task<IEnumerable<Car>> GetCarsByOwnerIdAsync(Guid ownerId);
     }
 }

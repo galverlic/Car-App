@@ -6,12 +6,12 @@ namespace Car_App.Service.Interface
 {
     public interface ICarService
     {
-        Task<PagedResult<Car>> GetAllCarsAsync(PaginationParameters paginationParameters, string make = null);
+        Task<PagedResult<Car>> GetAllCarsAsync(PaginationParameters paginationParameters, CarFilter filter);
         Task<Car> GetCarByIdAsync(Guid id);
         Task<IEnumerable<Car>> GetCar([FromQuery] int count);
-        Task CreateNewCarAsync(CarDTO newAvto);
+        Task CreateNewCarAsync(CarDto newAvto);
         Task<bool> DeleteCarAsync(Guid id);
-        Task<bool> UpdateCarAsync(Guid id, CarDTO newAvto);
+        Task<bool> UpdateCarAsync(Guid id, CarDto newAvto);
         Task<int> GetTotalCountAsync(string make = null);
     }
 }

@@ -13,10 +13,40 @@ public class OwnerService : IOwnerService
         _dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<Owner>> GetAllOwnersAsync()
+    public async Task<PagedResult<Owner>> GetAllOwnersAsync(PaginationParameters paginationParameters, string firstName = null)
     {
-        return await _dbContext.Owners.Include(o => o.Cars).ToListAsync();
+        var query = _dbContext.Owners.AsQueryable();
+
+        if (!string.IsNullOrEmpty(firstName))
+        {
+            query = query.Where(o => o.FirstName == firstName);
+        }
+
+        var totalCount = await query.CountAsync();
+        var totalPages = (int)Math.Ceiling(totalCount / (double)paginationParameters.PageSize);
+        var hasNextPage = totalPages > paginationParameters.Page;
+
+        if (paginationParameters.Page > totalPages)
+        {
+            paginationParameters.Page = totalPages;
+        }
+
+        var owners = await query.Include(o => o.Cars)
+                                .Skip((paginationParameters.Page - 1) * paginationParameters.PageSize)
+                                .Take(paginationParameters.PageSize)
+                                .ToListAsync();
+
+        return new PagedResult<Owner>()
+        {
+            Results = owners,
+            CurrentPage = paginationParameters.Page,
+            TotalPages = totalPages,
+            TotalCount = totalCount,
+            PageSize = paginationParameters.PageSize,
+            HasNextPage = hasNextPage
+        };
     }
+
 
     public async Task<Owner> GetOwnerWithCarsByIdAsync(Guid id)
     {
@@ -28,7 +58,7 @@ public class OwnerService : IOwnerService
         return await _dbContext.Owners.FindAsync(id);
     }
 
-    public async Task CreateNewOwnerAsync(OwnerDTO newOwner)
+    public async Task CreateNewOwnerAsync(OwnerDto newOwner)
     {
         Owner owner = new Owner
         {
@@ -70,7 +100,7 @@ public class OwnerService : IOwnerService
         }
     }
 
-    public async Task<bool> UpdateOwnerAsync(Guid id, OwnerDTO newOwner)
+    public async Task<bool> UpdateOwnerAsync(Guid id, OwnerDto newOwner)
     {
         var owner = await _dbContext.Owners.FindAsync(id);
         if (owner != null)

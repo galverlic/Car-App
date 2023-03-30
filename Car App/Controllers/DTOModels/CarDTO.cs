@@ -2,7 +2,7 @@
 
 namespace Car_App.Controllers.DTOModels
 {
-    public class CarDTO
+    public class CarDto
     {
         [StringLength(35, ErrorMessage = "The maximum length for the title is 35 characters!")]
         public string Title { get; init; }

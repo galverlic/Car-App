@@ -2,9 +2,9 @@
 
 namespace Car_App.Controllers.DTOModels;
 
-public class OwnerDTO
+public class OwnerDto
 {
-    public Guid Id { get; set; }
+    // public Guid Id { get; set; }
 
     [StringLength(20, MinimumLength = 3, ErrorMessage = "The first name should be between 3 and 20 characters!")]
     public string FirstName { get; set; }

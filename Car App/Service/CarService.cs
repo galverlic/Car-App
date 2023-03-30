@@ -16,30 +16,50 @@ namespace Car_App.Services
             _dbContext = dbContext;
         }
 
-        public async Task<PagedResult<Car>> GetAllCarsAsync(PaginationParameters paginationParameters, string make = null)
+        public async Task<PagedResult<Car>> GetAllCarsAsync(PaginationParameters paginationParameters, CarFilter filter)
         {
             var query = _dbContext.Cars.AsQueryable();
 
-            if (!string.IsNullOrEmpty(make))
+            if (filter.Id != null)
             {
-                query = query.Where(c => c.Make == make);
+                query = query.Where(c => c.Id == filter.Id);
             }
+
+            if (!string.IsNullOrEmpty(filter.Make))
+            {
+                query = query.Where(c => c.Make == filter.Make);
+            }
+
+            if (filter.Year != null)
+            {
+                query = query.Where(c => c.Year == filter.Year);
+            }
+
+            if (filter.Distance != null)
+            {
+                query = query.Where(c => c.Distance == filter.Distance);
+            }
+
+            if (!string.IsNullOrEmpty(filter.FuelType))
+            {
+                query = query.Where(c => c.FuelType == filter.FuelType);
+            }
+
+            if (filter.Power != null)
+            {
+                query = query.Where(c => c.Power == filter.Power);
+            }
+
+
+
 
             var totalCount = await query.CountAsync();
-            var totalPages = (int)Math.Ceiling(totalCount / (double)paginationParameters.PageSize);
-            var hasNextPage = totalPages > paginationParameters.Page;
+            var totalPages = (int)Math.Ceiling((double)totalCount / paginationParameters.PageSize);
+            var hasNextPage = (paginationParameters.Page < totalPages);
 
-            if (paginationParameters.Page < 1)
-            {
-                paginationParameters.Page = 1;
-            }
-
-            if (paginationParameters.Page > totalPages)
-            {
-                paginationParameters.Page = totalPages;
-            }
-
-            var cars = await query.Skip((paginationParameters.Page - 1) * paginationParameters.PageSize).Take(paginationParameters.PageSize).ToListAsync();
+            var cars = await query.Skip((paginationParameters.Page - 1) * paginationParameters.PageSize)
+                                  .Take(paginationParameters.PageSize)
+                                  .ToListAsync();
 
             return new PagedResult<Car>()
             {
@@ -51,6 +71,7 @@ namespace Car_App.Services
                 HasNextPage = hasNextPage
             };
         }
+
 
 
         public async Task<Car> GetCarByIdAsync(Guid id)
@@ -71,7 +92,7 @@ namespace Car_App.Services
             return avto.Take(count);
         }
 
-        public async Task CreateNewCarAsync(CarDTO newAvto)
+        public async Task CreateNewCarAsync(CarDto newAvto)
         {
             var newOwner = await _dbContext.Owners.FindAsync(newAvto.OwnerId);
             Car Item = new Car
@@ -106,7 +127,7 @@ namespace Car_App.Services
             }
         }
 
-        public async Task<bool> UpdateCarAsync(Guid id, CarDTO newAvto)
+        public async Task<bool> UpdateCarAsync(Guid id, CarDto newAvto)
         {
             var car = await _dbContext.Cars.FindAsync(id);
             if (car != null)
@@ -142,5 +163,7 @@ namespace Car_App.Services
 
             return totalCount;
         }
+
+
     }
 }

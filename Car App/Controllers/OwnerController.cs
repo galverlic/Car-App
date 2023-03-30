@@ -1,4 +1,5 @@
 ﻿using Car_App.Controllers.DTOModels;
+using Car_App.Data.Models;
 using Car_App.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -20,35 +21,44 @@ namespace Car_App.Controllers
 
         //GET ALL OWNERS
         [HttpGet("owners")]
-        public async Task<ActionResult<List<OwnerDTO>>> GetAllOwnersWithCars()
+        public async Task<ActionResult<PagedResult<OwnerDto>>> GetOwners([FromQuery] string firstName, [FromQuery] PaginationParameters paginationParameters)
         {
-            var owners = await _ownerService.GetAllOwnersAsync();
+            var result = await _ownerService.GetAllOwnersAsync(paginationParameters, firstName);
 
-            var ownerDTOs = owners.Select(owner =>
-            {
-                if (owner == null)
-                {
-                    return null;
-                }
 
-                return new OwnerDTO
-                {
-                    Id = owner.Id,
-                    FirstName = owner.FirstName,
-                    LastName = owner.LastName,
-                    Emso = owner.Emso,
-                    TelephoneNumber = owner.TelephoneNumber,
-                    CarIds = owner.Cars.Select(car => car.Id).ToList()
-                };
-            }).ToList();
 
-            return ownerDTOs;
+            return Ok(result);
         }
+
+        //public async Task<ActionResult<List<OwnerDto>>> GetAllOwnersWithCars()
+        //{
+        //    var owners = await _ownerService.GetAllOwnersAsync();
+
+        //    var ownerDTOs = owners.Select(owner =>
+        //    {
+        //        if (owner == null)
+        //        {
+        //            return null;
+        //        }
+
+        //        return new OwnerDto
+        //        {
+        //            //Id = owner.Id,
+        //            FirstName = owner.FirstName,
+        //            LastName = owner.LastName,
+        //            Emso = owner.Emso,
+        //            TelephoneNumber = owner.TelephoneNumber,
+        //            CarIds = owner.Cars.Select(car => car.Id).ToList()
+        //        };
+        //    }).ToList();
+
+        //    return ownerDTOs;
+        //}
 
         // GET A CAR BY IT'S OWNER'S ID
 
         [HttpGet("{ownerId}/cars")]
-        public async Task<ActionResult<List<CarDTO>>> GetCarsByOwnerId(Guid ownerId)
+        public async Task<ActionResult<List<CarDto>>> GetCarsByOwnerId(Guid ownerId)
         {
             var owner = await _ownerService.GetOwnerWithCarsByIdAsync(ownerId);
 
@@ -57,7 +67,7 @@ namespace Car_App.Controllers
                 return NotFound();
             }
 
-            var AvtoDTOs = owner.Cars.Select(car => new CarDTO
+            var CarDtos = owner.Cars.Select(car => new CarDto
             {
                 //Id = car.Id,
                 Title = car.Title,
@@ -70,7 +80,7 @@ namespace Car_App.Controllers
                 OwnerId = car.OwnerId
             }).ToList();
 
-            return AvtoDTOs;
+            return CarDtos;
         }
 
 
@@ -78,7 +88,7 @@ namespace Car_App.Controllers
 
         // CREATE NEW OWNER
         [HttpPost("CreateNewOwner")]
-        public async Task<ActionResult> CreateNewOwner([FromBody] OwnerDTO newOwner)
+        public async Task<ActionResult> CreateNewOwner([FromBody] OwnerDto newOwner)
         {
             await _ownerService.CreateNewOwnerAsync(newOwner);
             return Created("", newOwner);
@@ -101,7 +111,7 @@ namespace Car_App.Controllers
 
         // UPDATE OWNER BY ID
         [HttpPut("UpdateOwner/{id}")]
-        public async Task<ActionResult> UpdateOwner([FromBody] OwnerDTO newOwner, Guid id)
+        public async Task<ActionResult> UpdateOwner([FromBody] OwnerDto newOwner, Guid id)
         {
             await _ownerService.UpdateOwnerAsync(id, newOwner);
             return Ok(newOwner);
