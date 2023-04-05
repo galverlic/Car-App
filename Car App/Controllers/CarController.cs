@@ -20,13 +20,19 @@ namespace Car_App.Controllers
         // GET: api/Cars
 
         // getter search  po vseh avtih
+        /// <summary>
+        /// Gets all cars
+        /// </summary>
+        /// <returns>A list of all cars in the database</returns>
         [HttpGet]
-        public async Task<ActionResult<PagedResult<Car>>> GetCars([FromQuery] PaginationParameters paginationParameters, [FromQuery] CarFilter filter)
+        public async Task<ActionResult<PagedResult<Car>>> GetCars([FromQuery] PaginationParameters paginationParameters, [FromQuery] CarFilter filter, [FromQuery] string sortBy)
         {
-            var result = await _carService.GetAllCarsAsync(paginationParameters, filter);
+            var result = await _carService.GetAllCarsAsync(paginationParameters, filter, sortBy);
 
             return Ok(result);
         }
+
+
 
         // getter find car by ID
         [HttpGet("GetCarById/{id}")]

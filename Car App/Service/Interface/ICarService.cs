@@ -6,7 +6,7 @@ namespace Car_App.Service.Interface
 {
     public interface ICarService
     {
-        Task<PagedResult<Car>> GetAllCarsAsync(PaginationParameters paginationParameters, CarFilter filter);
+        Task<PagedResult<Car>> GetAllCarsAsync(PaginationParameters paginationParameters, CarFilter filter, string sortBy);
         Task<Car> GetCarByIdAsync(Guid id);
         Task<IEnumerable<Car>> GetCar([FromQuery] int count);
         Task CreateNewCarAsync(CarDto newAvto);

@@ -16,10 +16,37 @@ namespace Car_App.Services
             _dbContext = dbContext;
         }
 
-        public async Task<PagedResult<Car>> GetAllCarsAsync(PaginationParameters paginationParameters, CarFilter filter)
+        public async Task<PagedResult<Car>> GetAllCarsAsync(PaginationParameters paginationParameters, CarFilter filter, string sortBy)
         {
+
+
             var query = _dbContext.Cars.AsQueryable();
 
+
+            query = ApplySortingAndFiltering(query, filter, sortBy);
+
+
+            var totalCount = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling((double)totalCount / paginationParameters.PageSize);
+            var hasNextPage = (paginationParameters.Page < totalPages);
+
+            var cars = await query.Skip((paginationParameters.Page - 1) * paginationParameters.PageSize)
+                                  .Take(paginationParameters.PageSize)
+                                  .ToListAsync();
+
+            return new PagedResult<Car>()
+            {
+                Results = cars,
+                CurrentPage = paginationParameters.Page,
+                TotalPages = totalPages,
+                TotalCount = totalCount,
+                PageSize = paginationParameters.PageSize,
+                HasNextPage = hasNextPage
+            };
+        }
+
+        private IQueryable<Car> ApplySortingAndFiltering(IQueryable<Car> query, CarFilter filter, string sortBy)
+        {
             if (filter.Id != null)
             {
                 query = query.Where(c => c.Id == filter.Id);
@@ -50,30 +77,24 @@ namespace Car_App.Services
                 query = query.Where(c => c.Power == filter.Power);
             }
 
-            query = query.OrderBy(c => c.Year);
-
-
-
-
-            var totalCount = await query.CountAsync();
-            var totalPages = (int)Math.Ceiling((double)totalCount / paginationParameters.PageSize);
-            var hasNextPage = (paginationParameters.Page < totalPages);
-
-            var cars = await query.Skip((paginationParameters.Page - 1) * paginationParameters.PageSize)
-                                  .Take(paginationParameters.PageSize)
-                                  .ToListAsync();
-
-            return new PagedResult<Car>()
+            switch (sortBy)
             {
-                Results = cars,
-                CurrentPage = paginationParameters.Page,
-                TotalPages = totalPages,
-                TotalCount = totalCount,
-                PageSize = paginationParameters.PageSize,
-                HasNextPage = hasNextPage
-            };
-        }
+                case "make_desc":
+                    query = query.OrderByDescending(c => c.Make);
+                    break;
+                case "distance_asc":
+                    query = query.OrderBy(c => c.Distance);
+                    break;
+                case "distance_desc":
+                    query = query.OrderByDescending(c => c.Distance);
+                    break;
+                default:
+                    query = query.OrderBy(c => c.Year);
+                    break;
+            }
 
+            return query;
+        }
 
 
         public async Task<Car> GetCarByIdAsync(Guid id)
