@@ -50,6 +50,8 @@ namespace Car_App.Services
                 query = query.Where(c => c.Power == filter.Power);
             }
 
+            query = query.OrderBy(c => c.Year);
+
 
 
 

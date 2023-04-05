@@ -44,7 +44,7 @@ namespace Car_App.Controllers
 
         // getter number of cars
         [HttpGet("GetNumberOfCars/{count}")]
-        public ActionResult GetAvto([FromQuery] int count)
+        public ActionResult GetCar([FromQuery] int count)
         {
             Car[] avto =
             {
