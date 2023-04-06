@@ -16,15 +16,15 @@ namespace Car_App.Services
             _dbContext = dbContext;
         }
 
-        public async Task<PagedResult<Car>> GetAllCarsAsync(PaginationParameters paginationParameters, CarFilter filter, string sortBy)
+        public async Task<PagedResult<Car>> GetAllCarsAsync(PaginationParameters paginationParameters, CarFilter filter, CarSortBy sortBy)
         {
 
 
             var query = _dbContext.Cars.AsQueryable();
 
 
-            query = ApplySortingAndFiltering(query, filter, sortBy);
-
+            query = ApplyFiltering(query, filter);
+            query = SortCars(query, sortBy);
 
             var totalCount = await query.CountAsync();
             var totalPages = (int)Math.Ceiling((double)totalCount / paginationParameters.PageSize);
@@ -45,7 +45,7 @@ namespace Car_App.Services
             };
         }
 
-        private IQueryable<Car> ApplySortingAndFiltering(IQueryable<Car> query, CarFilter filter, string sortBy)
+        private IQueryable<Car> ApplyFiltering(IQueryable<Car> query, CarFilter filter)
         {
             if (filter.Id != null)
             {
@@ -77,16 +77,43 @@ namespace Car_App.Services
                 query = query.Where(c => c.Power == filter.Power);
             }
 
+
+
+            return query;
+        }
+        private IQueryable<Car> SortCars(IQueryable<Car> query, CarSortBy sortBy)
+        {
             switch (sortBy)
             {
-                case "make_desc":
+                case CarSortBy.Make_Ascending:
+                    query = query.OrderBy(c => c.Make);
+                    break;
+                case CarSortBy.Make_Descending:
                     query = query.OrderByDescending(c => c.Make);
                     break;
-                case "distance_asc":
+                case CarSortBy.Model_Ascending:
+                    query = query.OrderBy(c => c.Model);
+                    break;
+                case CarSortBy.Model_Descending:
+                    query = query.OrderByDescending(c => c.Model);
+                    break;
+                case CarSortBy.Year_Ascending:
+                    query = query.OrderBy(c => c.Year);
+                    break;
+                case CarSortBy.Year_Descending:
+                    query = query.OrderByDescending(c => c.Year);
+                    break;
+                case CarSortBy.Distance_Ascending:
                     query = query.OrderBy(c => c.Distance);
                     break;
-                case "distance_desc":
+                case CarSortBy.Distance_Descending:
                     query = query.OrderByDescending(c => c.Distance);
+                    break;
+                case CarSortBy.Power_Ascending:
+                    query = query.OrderBy(c => c.Power);
+                    break;
+                case CarSortBy.Power_Descending:
+                    query = query.OrderByDescending(c => c.Power);
                     break;
                 default:
                     query = query.OrderBy(c => c.Year);
@@ -95,6 +122,7 @@ namespace Car_App.Services
 
             return query;
         }
+
 
 
         public async Task<Car> GetCarByIdAsync(Guid id)

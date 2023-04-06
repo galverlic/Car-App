@@ -25,12 +25,15 @@ namespace Car_App.Controllers
         /// </summary>
         /// <returns>A list of all cars in the database</returns>
         [HttpGet]
-        public async Task<ActionResult<PagedResult<Car>>> GetCars([FromQuery] PaginationParameters paginationParameters, [FromQuery] CarFilter filter, [FromQuery] string sortBy)
+        public async Task<ActionResult<PagedResult<Car>>> GetCars([FromQuery] PaginationParameters paginationParameters, [FromQuery] CarFilter filter, CarSortBy sortBy)
         {
             var result = await _carService.GetAllCarsAsync(paginationParameters, filter, sortBy);
 
             return Ok(result);
         }
+
+
+
 
 
 
