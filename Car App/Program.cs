@@ -2,6 +2,8 @@ using Car_App.Data.Context;
 using Car_App.Service.Interface;
 using Car_App.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +17,17 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddControllers()
 .AddJsonOptions(opts => opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter())); builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo()
+    {
+        Title = "car",
+        Version = "version"
+    });
+    string filePath = Path.Combine(AppContext.BaseDirectory, Assembly.GetEntryAssembly()?.GetName().Name + ".xml");
+    c.IncludeXmlComments(filePath);
+
+});
 builder.Services.AddScoped<ICarService, CarService>();
 builder.Services.AddScoped<IOwnerService, OwnerService>();
 

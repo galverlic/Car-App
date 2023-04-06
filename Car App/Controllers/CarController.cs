@@ -6,7 +6,7 @@ using System.Net;
 
 namespace Car_App.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("car")]
     [ApiController]
     public class CarController : ControllerBase
     {
@@ -19,12 +19,12 @@ namespace Car_App.Controllers
 
         // GET: api/Cars
 
-        // getter search  po vseh avtih
         /// <summary>
         /// Gets all cars
         /// </summary>
         /// <returns>A list of all cars in the database</returns>
-        [HttpGet]
+        [HttpGet()]
+
         public async Task<ActionResult<PagedResult<Car>>> GetCars([FromQuery] PaginationParameters paginationParameters, [FromQuery] CarFilter filter, CarSortBy sortBy)
         {
             var result = await _carService.GetAllCarsAsync(paginationParameters, filter, sortBy);
@@ -38,7 +38,13 @@ namespace Car_App.Controllers
 
 
         // getter find car by ID
-        [HttpGet("GetCarById/{id}")]
+
+        /// <summary>
+        /// Finds car by it's id
+        /// </summary>
+        /// <returns>One car matching it's id</returns>
+        [HttpGet("get-car-by-id/{id}")]
+
         public async Task<ActionResult<Car>> GetCar(Guid id)
         {
             var car = await _carService.GetCarByIdAsync(id);
@@ -51,8 +57,12 @@ namespace Car_App.Controllers
             return car;
         }
 
+        /// <summary>
+        /// Number of cars in the database
+        /// </summary>
+        /// <returns>Number of cars in the database</returns>
         // getter number of cars
-        [HttpGet("GetNumberOfCars/{count}")]
+        [HttpGet("get-number-of-cars/{count}")]
         public ActionResult GetCar([FromQuery] int count)
         {
             Car[] avto =
@@ -67,7 +77,12 @@ namespace Car_App.Controllers
         }
 
         // create a new car
+        /// <summary>
+        /// Create a new car
+        /// </summary>
+        /// <returns>New car added to the database</returns>
         [HttpPost]
+
         public async Task<ActionResult> CreateNewCar([FromBody] CarDto newAvto)
         {
             await _carService.CreateNewCarAsync(newAvto);
@@ -75,7 +90,11 @@ namespace Car_App.Controllers
         }
 
         // delete a car by ID
-        [HttpDelete("Delete/{id}")]
+        /// <summary>
+        /// Delete a car
+        /// </summary>
+        /// <returns>Deletes a car from the database</returns>
+        [HttpDelete("delete/{id}")]
         public async Task<ActionResult> DeleteCar(Guid id)
         {
             var car = await _carService.DeleteCarAsync(id);
@@ -90,7 +109,11 @@ namespace Car_App.Controllers
         }
 
         // update a car by it's ID
-        [HttpPut("Update/{id}")]
+        /// <summary>
+        /// Update a car
+        /// </summary>
+        /// <returns>Updates a car</returns>
+        [HttpPut("update/{id}")]
         public async Task<ActionResult> UpdateCar([FromBody] CarDto newCar, Guid id)
         {
             await _carService.UpdateCarAsync(id, newCar);

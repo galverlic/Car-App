@@ -6,7 +6,7 @@ using System.Net;
 
 namespace Car_App.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("owner")]
     [ApiController]
     public class OwnerController : ControllerBase
 
@@ -20,6 +20,11 @@ namespace Car_App.Controllers
         }
 
         //GET ALL OWNERS
+
+        /// <summary>
+        /// Gets all owners
+        /// </summary>
+        /// <returns>A paged list of owners matching the filter criteria</returns>
         [HttpGet("owners")]
         public async Task<ActionResult<PagedResult<OwnerDto>>> GetOwners([FromQuery] string firstName, [FromQuery] PaginationParameters paginationParameters)
         {
@@ -56,8 +61,12 @@ namespace Car_App.Controllers
         //}
 
         // GET A CAR BY IT'S OWNER'S ID
+        /// <summary>
+        /// Gets all cars for an owner
+        /// </summary>
+        /// <returns>A list of cars owned by the specified owner</returns>
 
-        [HttpGet("{ownerId}/cars")]
+        [HttpGet("{owner-id}/cars")]
         public async Task<ActionResult<List<CarDto>>> GetCarsByOwnerId(Guid ownerId)
         {
             var owner = await _ownerService.GetOwnerWithCarsByIdAsync(ownerId);
@@ -87,7 +96,12 @@ namespace Car_App.Controllers
 
 
         // CREATE NEW OWNER
-        [HttpPost("CreateNewOwner")]
+
+        /// <summary>
+        /// Creates a new owner
+        /// </summary>
+        /// <returns>The details of the newly created owner</returns>
+        [HttpPost("create-new-owner")]
         public async Task<ActionResult> CreateNewOwner([FromBody] OwnerDto newOwner)
         {
             await _ownerService.CreateNewOwnerAsync(newOwner);
@@ -95,7 +109,12 @@ namespace Car_App.Controllers
         }
 
         // DELETE OWNER BY ID
-        [HttpDelete("DeleteOwner/{id}")]
+
+        /// <summary>
+        /// Deletes an owner by ID
+        /// </summary>
+        /// <returns>A status code indicating the result of the operation</returns>
+        [HttpDelete("delete-owner/{id}")]
         public async Task<ActionResult> DeleteOwner(Guid id)
         {
             var owner = await _ownerService.DeleteOwnerAsync(id);
@@ -110,7 +129,13 @@ namespace Car_App.Controllers
         }
 
         // UPDATE OWNER BY ID
-        [HttpPut("UpdateOwner/{id}")]
+
+        /// <summary>
+        /// Updates an owner by ID
+        /// </summary>
+
+        /// <returns>A status code indicating the result of the operation</returns>
+        [HttpPut("update-owner/{id}")]
         public async Task<ActionResult> UpdateOwner([FromBody] OwnerDto newOwner, Guid id)
         {
             await _ownerService.UpdateOwnerAsync(id, newOwner);
