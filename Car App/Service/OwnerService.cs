@@ -1,6 +1,7 @@
 ﻿using Car_App.Controllers.DTOModels;
 using Car_App.Data.Context;
 using Car_App.Data.Models;
+using Car_App.Data.Models.NewFolder;
 using Car_App.Service.Interface;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,23 +14,21 @@ public class OwnerService : IOwnerService
         _dbContext = dbContext;
     }
 
-    public async Task<PagedResult<Owner>> GetAllOwnersAsync(PaginationParameters paginationParameters, string firstName = null)
+    public async Task<PagedResult<Owner>> GetAllOwnersAsync(PaginationParameters paginationParameters, OwnerFilter filter)
     {
         var query = _dbContext.Owners.AsQueryable();
 
-        if (!string.IsNullOrEmpty(firstName))
-        {
-            query = query.Where(o => o.FirstName == firstName);
-        }
+        query = ApplyFiltering(query, filter);
+
 
         var totalCount = await query.CountAsync();
-        var totalPages = (int)Math.Ceiling(totalCount / (double)paginationParameters.PageSize);
-        var hasNextPage = totalPages > paginationParameters.Page;
+        var totalPages = (int)Math.Ceiling((double)totalCount / paginationParameters.PageSize);
+        var hasNextPage = (paginationParameters.Page < totalPages);
 
-        if (paginationParameters.Page > totalPages)
-        {
-            paginationParameters.Page = totalPages;
-        }
+        //if (paginationParameters.Page > totalPages)
+        //{
+        //    paginationParameters.Page = totalPages;
+        //}
 
         var owners = await query.Include(o => o.Cars)
                                 .Skip((paginationParameters.Page - 1) * paginationParameters.PageSize)
@@ -45,6 +44,41 @@ public class OwnerService : IOwnerService
             PageSize = paginationParameters.PageSize,
             HasNextPage = hasNextPage
         };
+    }
+
+    private IQueryable<Owner> ApplyFiltering(IQueryable<Owner> query, OwnerFilter filter)
+    {
+        if (filter.Id != null)
+        {
+            query = query.Where(o => o.Id == filter.Id);
+        }
+
+        if (!string.IsNullOrEmpty(filter.FirstName))
+        {
+            query = query.Where(o => o.FirstName == filter.FirstName);
+        }
+
+        if (!string.IsNullOrEmpty(filter.LastName))
+        {
+            query = query.Where(o => o.LastName == filter.LastName);
+        }
+
+        if (filter.Emso != null)
+        {
+            query = query.Where(o => o.Emso == filter.Emso);
+        }
+
+        if (filter.TelephoneNumber != null)
+        {
+            query = query.Where(o => o.TelephoneNumber == filter.TelephoneNumber);
+        }
+
+        return query;
+
+
+
+
+
     }
 
 

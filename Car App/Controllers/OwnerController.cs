@@ -1,5 +1,6 @@
 ﻿using Car_App.Controllers.DTOModels;
 using Car_App.Data.Models;
+using Car_App.Data.Models.NewFolder;
 using Car_App.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -26,39 +27,15 @@ namespace Car_App.Controllers
         /// </summary>
         /// <returns>A paged list of owners matching the filter criteria</returns>
         [HttpGet("owners")]
-        public async Task<ActionResult<PagedResult<OwnerDto>>> GetOwners([FromQuery] string firstName, [FromQuery] PaginationParameters paginationParameters)
+        public async Task<ActionResult<PagedResult<Owner>>> GetOwners([FromQuery] PaginationParameters paginationParameters, [FromQuery] OwnerFilter filter)
         {
-            var result = await _ownerService.GetAllOwnersAsync(paginationParameters, firstName);
+            var result = await _ownerService.GetAllOwnersAsync(paginationParameters, filter);
 
 
 
             return Ok(result);
         }
 
-        //public async Task<ActionResult<List<OwnerDto>>> GetAllOwnersWithCars()
-        //{
-        //    var owners = await _ownerService.GetAllOwnersAsync();
-
-        //    var ownerDTOs = owners.Select(owner =>
-        //    {
-        //        if (owner == null)
-        //        {
-        //            return null;
-        //        }
-
-        //        return new OwnerDto
-        //        {
-        //            //Id = owner.Id,
-        //            FirstName = owner.FirstName,
-        //            LastName = owner.LastName,
-        //            Emso = owner.Emso,
-        //            TelephoneNumber = owner.TelephoneNumber,
-        //            CarIds = owner.Cars.Select(car => car.Id).ToList()
-        //        };
-        //    }).ToList();
-
-        //    return ownerDTOs;
-        //}
 
         // GET A CAR BY IT'S OWNER'S ID
         /// <summary>
