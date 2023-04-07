@@ -1,6 +1,6 @@
 ﻿namespace Car_App.Data.Models.Sorting
 {
-    public enum CarSortingDirection
+    public enum SortingDirection
     {
         Ascending,
         Descending

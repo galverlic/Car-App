@@ -2,6 +2,7 @@
 using Car_App.Data.Context;
 using Car_App.Data.Models;
 using Car_App.Data.Models.NewFolder;
+using Car_App.Data.Models.Sorting;
 using Car_App.Service.Interface;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,11 +15,12 @@ public class OwnerService : IOwnerService
         _dbContext = dbContext;
     }
 
-    public async Task<PagedResult<Owner>> GetAllOwnersAsync(PaginationParameters paginationParameters, OwnerFilter filter)
+    public async Task<PagedResult<Owner>> GetAllOwnersAsync(PaginationParameters paginationParameters, OwnerFilter filter, OwnerSortBy sortBy)
     {
         var query = _dbContext.Owners.AsQueryable();
 
         query = ApplyFiltering(query, filter);
+        query = SortOwners(query, sortBy);
 
 
         var totalCount = await query.CountAsync();
@@ -79,6 +81,34 @@ public class OwnerService : IOwnerService
 
 
 
+    }
+    private IQueryable<Owner> SortOwners(IQueryable<Owner> query, OwnerSortBy sortBy, SortingDirection sortDirection)
+    {
+        switch (sortBy)
+        {
+            case OwnerSortBy.FirstName:
+                if (sortDirection == SortingDirection.Ascending)
+                    query = query.OrderBy(o => o.FirstName);
+                else
+                    query = query.OrderByDescending(o => o.FirstName);
+                break;
+            case OwnerSortBy.LastName:
+                if (sortDirection == SortingDirection.Ascending)
+                    query = query.OrderBy(o => o.LastName);
+                else
+                    query = query.OrderByDescending(o => o.LastName);
+                break;
+            case OwnerSortBy.TelephoneNumber:
+                if (sortDirection == SortingDirection.Ascending)
+                    query = query.OrderBy(o => o.TelephoneNumber);
+                else
+                    query = query.OrderByDescending(o => o.TelephoneNumber);
+                break;
+            default:
+                query = query.OrderBy(o => o.Emso);
+                break;
+        }
+        return query;
     }
 
 

@@ -1,4 +1,4 @@
-﻿namespace Car_App.Data.Models
+﻿namespace Car_App.Data.Models.Filtering
 {
     public class CarFilter
     {

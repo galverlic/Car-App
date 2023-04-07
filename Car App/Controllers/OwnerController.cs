@@ -1,6 +1,7 @@
 ﻿using Car_App.Controllers.DTOModels;
 using Car_App.Data.Models;
 using Car_App.Data.Models.NewFolder;
+using Car_App.Data.Models.Sorting;
 using Car_App.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -29,9 +30,9 @@ namespace Car_App.Controllers
         /// </summary>
         /// <returns>A paged list of owners matching the filter criteria</returns>
         [HttpGet("owners")]
-        public async Task<ActionResult<PagedResult<Owner>>> GetOwners([FromQuery] PaginationParameters paginationParameters, [FromQuery] OwnerFilter filter)
+        public async Task<ActionResult<PagedResult<Owner>>> GetOwners([FromQuery] PaginationParameters paginationParameters, [FromQuery] OwnerFilter filter, OwnerSortBy sortBy, SortingDirection sortingDirection)
         {
-            var result = await _ownerService.GetAllOwnersAsync(paginationParameters, filter);
+            var result = await _ownerService.GetAllOwnersAsync(paginationParameters, filter, sortBy, sortingDirection);
 
 
 
