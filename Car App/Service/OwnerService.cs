@@ -15,12 +15,12 @@ public class OwnerService : IOwnerService
         _dbContext = dbContext;
     }
 
-    public async Task<PagedResult<Owner>> GetAllOwnersAsync(PaginationParameters paginationParameters, OwnerFilter filter, OwnerSortBy sortBy)
+    public async Task<PagedResult<Owner>> GetAllOwnersAsync(PaginationParameters paginationParameters, OwnerFilter filter, OwnerSortBy sortBy, SortingDirection sortingDirection)
     {
         var query = _dbContext.Owners.AsQueryable();
 
         query = ApplyFiltering(query, filter);
-        query = SortOwners(query, sortBy);
+        query = SortOwners(query, sortBy, sortingDirection);
 
 
         var totalCount = await query.CountAsync();
