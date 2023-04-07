@@ -1,11 +1,14 @@
 ﻿using Car_App.Controllers.DTOModels;
 using Car_App.Data.Models;
+using Car_App.Data.Models.Sorting;
 using Car_App.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 namespace Car_App.Controllers
 {
+    //[Authorize]
+
     [Route("car")]
     [ApiController]
     public class CarController : ControllerBase
@@ -25,16 +28,12 @@ namespace Car_App.Controllers
         /// <returns>A list of all cars in the database</returns>
         [HttpGet()]
 
-        public async Task<ActionResult<PagedResult<Car>>> GetCars([FromQuery] PaginationParameters paginationParameters, [FromQuery] CarFilter filter, CarSortBy sortBy)
+        public async Task<ActionResult<PagedResult<Car>>> GetCars([FromQuery] PaginationParameters paginationParameters, [FromQuery] CarFilter filter, CarSortBy sortBy, CarSortingDirection sortingDirection)
         {
-            var result = await _carService.GetAllCarsAsync(paginationParameters, filter, sortBy);
+            var result = await _carService.GetAllCarsAsync(paginationParameters, filter, sortBy, sortingDirection);
 
             return Ok(result);
         }
-
-
-
-
 
 
         // getter find car by ID

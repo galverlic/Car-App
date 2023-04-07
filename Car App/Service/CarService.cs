@@ -1,6 +1,7 @@
 ﻿using Car_App.Controllers.DTOModels;
 using Car_App.Data.Context;
 using Car_App.Data.Models;
+using Car_App.Data.Models.Sorting;
 using Car_App.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +17,7 @@ namespace Car_App.Services
             _dbContext = dbContext;
         }
 
-        public async Task<PagedResult<Car>> GetAllCarsAsync(PaginationParameters paginationParameters, CarFilter filter, CarSortBy sortBy)
+        public async Task<PagedResult<Car>> GetAllCarsAsync(PaginationParameters paginationParameters, CarFilter filter, CarSortBy sortBy, CarSortingDirection sortingDirection)
         {
 
 
@@ -24,7 +25,7 @@ namespace Car_App.Services
 
 
             query = ApplyFiltering(query, filter);
-            query = SortCars(query, sortBy);
+            query = SortCars(query, sortBy, sortingDirection);
 
             var totalCount = await query.CountAsync();
             var totalPages = (int)Math.Ceiling((double)totalCount / paginationParameters.PageSize);
@@ -81,39 +82,39 @@ namespace Car_App.Services
 
             return query;
         }
-        private IQueryable<Car> SortCars(IQueryable<Car> query, CarSortBy sortBy)
+        private IQueryable<Car> SortCars(IQueryable<Car> query, CarSortBy sortBy, CarSortingDirection sortDirection)
         {
             switch (sortBy)
             {
-                case CarSortBy.Make_Ascending:
-                    query = query.OrderBy(c => c.Make);
+                case CarSortBy.Make:
+                    if (sortDirection == CarSortingDirection.Ascending)
+                        query = query.OrderBy(c => c.Make);
+                    else
+                        query = query.OrderByDescending(c => c.Make);
                     break;
-                case CarSortBy.Make_Descending:
-                    query = query.OrderByDescending(c => c.Make);
+                case CarSortBy.Model:
+                    if (sortDirection == CarSortingDirection.Ascending)
+                        query = query.OrderBy(c => c.Model);
+                    else
+                        query = query.OrderByDescending(c => c.Model);
                     break;
-                case CarSortBy.Model_Ascending:
-                    query = query.OrderBy(c => c.Model);
+                case CarSortBy.Year:
+                    if (sortDirection == CarSortingDirection.Ascending)
+                        query = query.OrderBy(c => c.Year);
+                    else
+                        query = query.OrderByDescending(c => c.Year);
                     break;
-                case CarSortBy.Model_Descending:
-                    query = query.OrderByDescending(c => c.Model);
+                case CarSortBy.Distance:
+                    if (sortDirection == CarSortingDirection.Ascending)
+                        query = query.OrderBy(c => c.Distance);
+                    else
+                        query = query.OrderByDescending(c => c.Distance);
                     break;
-                case CarSortBy.Year_Ascending:
-                    query = query.OrderBy(c => c.Year);
-                    break;
-                case CarSortBy.Year_Descending:
-                    query = query.OrderByDescending(c => c.Year);
-                    break;
-                case CarSortBy.Distance_Ascending:
-                    query = query.OrderBy(c => c.Distance);
-                    break;
-                case CarSortBy.Distance_Descending:
-                    query = query.OrderByDescending(c => c.Distance);
-                    break;
-                case CarSortBy.Power_Ascending:
-                    query = query.OrderBy(c => c.Power);
-                    break;
-                case CarSortBy.Power_Descending:
-                    query = query.OrderByDescending(c => c.Power);
+                case CarSortBy.Power:
+                    if (sortDirection == CarSortingDirection.Ascending)
+                        query = query.OrderBy(c => c.Power);
+                    else
+                        query = query.OrderByDescending(c => c.Power);
                     break;
                 default:
                     query = query.OrderBy(c => c.Year);
@@ -124,7 +125,6 @@ namespace Car_App.Services
         }
 
 
-
         public async Task<Car> GetCarByIdAsync(Guid id)
         {
             return await _dbContext.Cars.FindAsync(id);
@@ -132,7 +132,7 @@ namespace Car_App.Services
 
         public async Task<IEnumerable<Car>> GetCar([FromQuery] int count)
         {
-            Car[] avto =
+            Car[] car =
             {
                 new() { Title = "Citroen C-Elysee Seduction HDi 92 BVM"},
                 new() { Title = "Renault Twingo 1.2 16V .TEMPOMAT.."},
@@ -140,7 +140,7 @@ namespace Car_App.Services
 
             };
 
-            return avto.Take(count);
+            return car.Take(count);
         }
 
         public async Task CreateNewCarAsync(CarDto newAvto)

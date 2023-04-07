@@ -7,6 +7,8 @@ using System.Net;
 
 namespace Car_App.Controllers
 {
+    //[Authorize]
+
     [Route("owner")]
     [ApiController]
     public class OwnerController : ControllerBase
@@ -55,7 +57,6 @@ namespace Car_App.Controllers
 
             var CarDtos = owner.Cars.Select(car => new CarDto
             {
-                //Id = car.Id,
                 Title = car.Title,
                 Make = car.Make,
                 Model = car.Model,

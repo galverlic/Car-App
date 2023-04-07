@@ -1,0 +1,317 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Car App</name>
+    </assembly>
+    <members>
+        <member name="M:Car_App.Controllers.CarController.GetCars(Car_App.Data.Models.PaginationParameters,Car_App.Data.Models.CarFilter,Car_App.Data.Models.CarSortBy)">
+            <summary>
+            Gets all cars
+            </summary>
+            <returns>A list of all cars in the database</returns>
+        </member>
+        <member name="M:Car_App.Controllers.CarController.GetCar(System.Guid)">
+            <summary>
+            Finds car by it's id
+            </summary>
+            <returns>One car matching it's id</returns>
+        </member>
+        <member name="M:Car_App.Controllers.CarController.GetCar(System.Int32)">
+            <summary>
+            Number of cars in the database
+            </summary>
+            <returns>Number of cars in the database</returns>
+        </member>
+        <member name="M:Car_App.Controllers.CarController.CreateNewCar(Car_App.Controllers.DTOModels.CarDto)">
+            <summary>
+            Create a new car
+            </summary>
+            <returns>New car added to the database</returns>
+        </member>
+        <member name="M:Car_App.Controllers.CarController.DeleteCar(System.Guid)">
+            <summary>
+            Delete a car
+            </summary>
+            <returns>Deletes a car from the database</returns>
+        </member>
+        <member name="M:Car_App.Controllers.CarController.UpdateCar(Car_App.Controllers.DTOModels.CarDto,System.Guid)">
+            <summary>
+            Update a car
+            </summary>
+            <returns>Updates a car</returns>
+        </member>
+        <member name="M:Car_App.Controllers.OwnerController.GetOwners(Car_App.Data.Models.PaginationParameters,Car_App.Data.Models.NewFolder.OwnerFilter)">
+            <summary>
+            Gets all owners
+            </summary>
+            <returns>A paged list of owners matching the filter criteria</returns>
+        </member>
+        <member name="M:Car_App.Controllers.OwnerController.GetCarsByOwnerId(System.Guid)">
+            <summary>
+            Gets all cars for an owner
+            </summary>
+            <returns>A list of cars owned by the specified owner</returns>
+        </member>
+        <member name="M:Car_App.Controllers.OwnerController.CreateNewOwner(Car_App.Controllers.DTOModels.OwnerDto)">
+            <summary>
+            Creates a new owner
+            </summary>
+            <returns>The details of the newly created owner</returns>
+        </member>
+        <member name="M:Car_App.Controllers.OwnerController.DeleteOwner(System.Guid)">
+            <summary>
+            Deletes an owner by ID
+            </summary>
+            <returns>A status code indicating the result of the operation</returns>
+        </member>
+        <member name="M:Car_App.Controllers.OwnerController.UpdateOwner(Car_App.Controllers.DTOModels.OwnerDto,System.Guid)">
+            <summary>
+            Updates an owner by ID
+            </summary>
+            <returns>A status code indicating the result of the operation</returns>
+        </member>
+        <member name="T:Car_App.Migrations.migration1">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.migration1.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.migration1.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.migration1.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Car_App.Migrations.AddOwnerCarRelationship">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.AddOwnerCarRelationship.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.AddOwnerCarRelationship.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.AddOwnerCarRelationship.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Car_App.Migrations.Migration2">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.Migration2.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.Migration2.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.Migration2.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.NewColumn.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Car_App.Migrations.Migration3">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.Migration3.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.Migration3.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.Migration3.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Car_App.Migrations.MyFourthMigration">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.MyFourthMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.MyFourthMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.MyFourthMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Car_App.Migrations.RemoveDOBParameter">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.RemoveDOBParameter.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.RemoveDOBParameter.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.RemoveDOBParameter.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Car_App.Migrations.PowerToDouble">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.PowerToDouble.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.PowerToDouble.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.PowerToDouble.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Car_App.Migrations.Validation">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.Validation.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.Validation.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.Validation.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Car_App.Migrations.NewValidations">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.NewValidations.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.NewValidations.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.NewValidations.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Car_App.Migrations.MyMigration4">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.MyMigration4.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.MyMigration4.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.MyMigration4.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Car_App.Migrations.asdifgadsng">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.asdifgadsng.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.asdifgadsng.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.asdifgadsng.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Car_App.Migrations.MigrationRenameColumnToDistance">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.MigrationRenameColumnToDistance.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.MigrationRenameColumnToDistance.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.MigrationRenameColumnToDistance.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Car_App.Migrations.MigrationRenameColumnToDistance58">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.MigrationRenameColumnToDistance58.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.MigrationRenameColumnToDistance58.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.MigrationRenameColumnToDistance58.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Car_App.Migrations.MigrationRenameColumnToDistance59">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.MigrationRenameColumnToDistance59.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.MigrationRenameColumnToDistance59.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.MigrationRenameColumnToDistance59.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Car_App.Migrations.MigrationRenameColumnToDistance60">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.MigrationRenameColumnToDistance60.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.MigrationRenameColumnToDistance60.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.MigrationRenameColumnToDistance60.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Car_App.Migrations.Development">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.Development.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.Development.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.Development.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Car_App.Migrations.TwoNewCOlumns">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.TwoNewCOlumns.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.TwoNewCOlumns.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.TwoNewCOlumns.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Car_App.Migrations.Truck">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.Truck.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.Truck.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.Truck.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Car_App.Migrations.DeleteTrucks">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.DeleteTrucks.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.DeleteTrucks.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.DeleteTrucks.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Car_App.Migrations.DropColumn">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.DropColumn.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.DropColumn.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Car_App.Migrations.DropColumn.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>
