@@ -5,6 +5,7 @@ using Car_App.Data.Models.NewFolder;
 using Car_App.Data.Models.Sorting;
 using Car_App.Service.Interface;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -12,9 +13,11 @@ public class OwnerService : IOwnerService
 {
     private readonly DatabaseContext _dbContext;
 
+
     public OwnerService(DatabaseContext dbContext)
     {
         _dbContext = dbContext;
+
     }
 
     public async Task<PagedResult<Owner>> GetAllOwnersAsync(PaginationParameters paginationParameters, OwnerFilter filter, OwnerSortBy sortBy, SortingDirection sortingDirection)
@@ -123,6 +126,29 @@ public class OwnerService : IOwnerService
     {
         return await _dbContext.Owners.FindAsync(id);
     }
+    public void SetPassword(Owner owner, string password)
+    {
+        using var hmac = new HMACSHA512();
+
+        owner.PasswordSalt = hmac.Key;
+        owner.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+
+    }
+
+    public bool VerifyPassword(Owner owner, string password)
+    {
+        using var hmac = new HMACSHA512(owner.PasswordSalt);
+
+        var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+
+        for (int i = 0; i < computedHash.Length; i++)
+        {
+            if (computedHash[i] != owner.PasswordHash[i]) return false;
+        }
+
+        return true;
+
+    }
 
     public async Task CreateNewOwnerAsync(OwnerDto newOwner)
     {
@@ -135,8 +161,7 @@ public class OwnerService : IOwnerService
             Emso = newOwner.Emso,
             TelephoneNumber = newOwner.TelephoneNumber
         };
-
-        owner.SetPassword(newOwner.Password); // hash the password and store the salt and hash in the Owner object
+        SetPassword(owner, newOwner.Password);
 
         if (newOwner.CarIds != null)
         {
@@ -152,29 +177,11 @@ public class OwnerService : IOwnerService
 
         await _dbContext.Owners.AddAsync(owner);
         await _dbContext.SaveChangesAsync();
+
     }
 
-    public void SetPassword(Owner owner, string password)
-    {
-        using var hmac = new HMACSHA512();
 
-        owner.PasswordSalt = hmac.Key;
-        owner.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-    }
 
-    public bool VerifyPassword(Owner owner, string password)
-    {
-        using var hmac = new HMACSHA512(owner.PasswordSalt);
-
-        var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-
-        for (int i = 0; i < computedHash.Length; i++)
-        {
-            if (computedHash[i] != owner.PasswordHash[i]) return false;
-        }
-
-        return true;
-    }
     public async Task<bool> DeleteOwnerAsync(Guid id)
     {
         var owner = await _dbContext.Owners.FindAsync(id);
@@ -189,6 +196,7 @@ public class OwnerService : IOwnerService
         {
             return false;
         }
+
     }
 
     public async Task<bool> UpdateOwnerAsync(Guid id, OwnerDto newOwner)
@@ -200,6 +208,7 @@ public class OwnerService : IOwnerService
             owner.LastName = newOwner.LastName;
             owner.Emso = newOwner.Emso;
             owner.TelephoneNumber = newOwner.TelephoneNumber;
+
 
             // remove existing cars
             owner.Cars.Clear();
@@ -225,11 +234,12 @@ public class OwnerService : IOwnerService
         {
             return false;
         }
-    }
 
+        
+
+    }
     public async Task<IEnumerable<Car>> GetCarsByOwnerIdAsync(Guid ownerId)
     {
         return await _dbContext.Cars.Where(c => c.OwnerId == ownerId).ToListAsync();
     }
-
 }

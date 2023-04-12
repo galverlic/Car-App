@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Car_App.Data.Models
 {
-    public class Owner
+    public class Owner 
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
@@ -35,26 +35,6 @@ namespace Car_App.Data.Models
 
         public Owner() { }
 
-        public void SetPassword(string password)
-        {
-            using var hmac = new HMACSHA512();
-
-            PasswordSalt = hmac.Key;
-            PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-        }
-
-        public bool VerifyPassword(string password)
-        {
-            using var hmac = new HMACSHA512(PasswordSalt);
-
-            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-
-            for (int i = 0; i < computedHash.Length; i++)
-            {
-                if (computedHash[i] != PasswordHash[i]) return false;
-            }
-
-            return true;
-        }
+       
     }
 }
