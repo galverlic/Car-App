@@ -5,6 +5,8 @@ using Car_App.Data.Models.NewFolder;
 using Car_App.Data.Models.Sorting;
 using Car_App.Service.Interface;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
+using System.Text;
 
 public class OwnerService : IOwnerService
 {
@@ -128,9 +130,13 @@ public class OwnerService : IOwnerService
         {
             FirstName = newOwner.FirstName,
             LastName = newOwner.LastName,
+            UserName = newOwner.UserName,
+            Email = newOwner.Email,
             Emso = newOwner.Emso,
             TelephoneNumber = newOwner.TelephoneNumber
         };
+
+        owner.SetPassword(newOwner.Password); // hash the password and store the salt and hash in the Owner object
 
         if (newOwner.CarIds != null)
         {
@@ -148,6 +154,27 @@ public class OwnerService : IOwnerService
         await _dbContext.SaveChangesAsync();
     }
 
+    public void SetPassword(Owner owner, string password)
+    {
+        using var hmac = new HMACSHA512();
+
+        owner.PasswordSalt = hmac.Key;
+        owner.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+    }
+
+    public bool VerifyPassword(Owner owner, string password)
+    {
+        using var hmac = new HMACSHA512(owner.PasswordSalt);
+
+        var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+
+        for (int i = 0; i < computedHash.Length; i++)
+        {
+            if (computedHash[i] != owner.PasswordHash[i]) return false;
+        }
+
+        return true;
+    }
     public async Task<bool> DeleteOwnerAsync(Guid id)
     {
         var owner = await _dbContext.Owners.FindAsync(id);

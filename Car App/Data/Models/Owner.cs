@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Car_App.Data.Models
 {
@@ -8,8 +10,6 @@ namespace Car_App.Data.Models
         public Guid Id { get; set; } = Guid.NewGuid();
 
         [StringLength(20, MinimumLength = 3, ErrorMessage = "The first name should be between 3 and 20 characters!")]
-
-
         public string FirstName { get; set; }
 
         [StringLength(20, MinimumLength = 3, ErrorMessage = "The last name should be between 3 and 20 characters!")]
@@ -18,8 +18,9 @@ namespace Car_App.Data.Models
         [StringLength(20, MinimumLength = 3, ErrorMessage = "The username should be between 3 and 20 characters!")]
         public string UserName { get; set; }
 
-        [RegularExpression(@"^(?=.*\d).{1,}$", ErrorMessage = "Password must contain at least one numeric character")]
-        public string Password { get; set; }
+        public byte[] PasswordHash { get; set; }
+
+        public byte[] PasswordSalt { get; set; }
 
         [RegularExpression(@"^[^\s@]+@[^\s@]+\.[^\s@]+$", ErrorMessage = "Invalid email format")]
         public string Email { get; set; }
@@ -34,6 +35,26 @@ namespace Car_App.Data.Models
 
         public Owner() { }
 
+        public void SetPassword(string password)
+        {
+            using var hmac = new HMACSHA512();
 
+            PasswordSalt = hmac.Key;
+            PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+        }
+
+        public bool VerifyPassword(string password)
+        {
+            using var hmac = new HMACSHA512(PasswordSalt);
+
+            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+
+            for (int i = 0; i < computedHash.Length; i++)
+            {
+                if (computedHash[i] != PasswordHash[i]) return false;
+            }
+
+            return true;
+        }
     }
 }
