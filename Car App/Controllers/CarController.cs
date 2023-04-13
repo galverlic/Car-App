@@ -10,10 +10,10 @@ using System.Net;
 
 namespace Car_App.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
+    [ApiController]
 
     [Route("car")]
-    [ApiController]
     public class CarController : ControllerBase
     {
         private readonly ICarService _carService;

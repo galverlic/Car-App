@@ -1,4 +1,7 @@
-﻿using Car_App.Controllers.DTOModels;
+﻿namespace Car_App.Controllers
+
+{ 
+using Car_App.Controllers.DTOModels;
 using Car_App.Data.Models;
 using Car_App.Data.Models.NewFolder;
 using Car_App.Data.Models.Sorting;
@@ -13,9 +16,8 @@ using System.Net;
 using System.Security.Claims;
 using System.Text;
 
-namespace Car_App.Controllers
-{
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
+    [Authorize]
 
     [Route("owner")]
     [ApiController]
