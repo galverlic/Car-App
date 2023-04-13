@@ -5,13 +5,18 @@ using Car_App.Data.Models.NewFolder;
 using Car_App.Data.Models.Sorting;
 using Car_App.Service.Interface;
 using Microsoft.EntityFrameworkCore;
-using System;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using WebApi.Helpers;
 
 public class OwnerService : IOwnerService
 {
     private readonly DatabaseContext _dbContext;
+    private readonly AppSettings _appSettings;
+
 
 
     public OwnerService(DatabaseContext dbContext)
@@ -126,28 +131,19 @@ public class OwnerService : IOwnerService
     {
         return await _dbContext.Owners.FindAsync(id);
     }
-    public void SetPassword(Owner owner, string password)
+
+    public async Task RegisterAsync(OwnerDto ownerDto)
     {
-        using var hmac = new HMACSHA512();
-
-        owner.PasswordSalt = hmac.Key;
-        owner.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-
-    }
-
-    public bool VerifyPassword(Owner owner, string password)
-    {
-        using var hmac = new HMACSHA512(owner.PasswordSalt);
-
-        var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-
-        for (int i = 0; i < computedHash.Length; i++)
+        // Map the DTO to the entity and save to the database
+        var owner = new Owner
         {
-            if (computedHash[i] != owner.PasswordHash[i]) return false;
-        }
-
-        return true;
-
+            FirstName = ownerDto.FirstName,
+            LastName = ownerDto.LastName,
+            Email = ownerDto.Email,
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(ownerDto.Password)
+        };
+        await _dbContext.Owners.AddAsync(owner);
+        await _dbContext.SaveChangesAsync();
     }
 
     public async Task CreateNewOwnerAsync(OwnerDto newOwner)
@@ -161,7 +157,9 @@ public class OwnerService : IOwnerService
             Emso = newOwner.Emso,
             TelephoneNumber = newOwner.TelephoneNumber
         };
-        SetPassword(owner, newOwner.Password);
+
+        // Hash the password before storing it in the database
+        owner.PasswordHash = HashPassword(newOwner.Password);
 
         if (newOwner.CarIds != null)
         {
@@ -177,11 +175,63 @@ public class OwnerService : IOwnerService
 
         await _dbContext.Owners.AddAsync(owner);
         await _dbContext.SaveChangesAsync();
+    }
 
+    public async Task<AuthenticateResponseDto> AuthenticateAsync(AuthenticateRequestDto model)
+    {
+        var owner = await _dbContext.Owners.SingleOrDefaultAsync(x => x.UserName == model.Username);
+
+        if (owner == null || !BCrypt.Net.BCrypt.Verify(model.Password, owner.PasswordHash))
+            throw new AppException("Email or password is incorrect");
+
+        // Authentication successful, generate JWT token
+        var token = GenerateJwtToken(owner);
+
+        return new AuthenticateResponseDto(owner, token);
+    }
+
+    private string GenerateJwtToken(Owner owner)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(new[] { new Claim("id", owner.Id.ToString()) }),
+            Expires = DateTime.UtcNow.AddDays(7),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+        };
+
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(token);
+    }
+
+    private bool VerifyPassword(Owner owner, string password)
+    {
+        // Hash the provided password and compare it to the stored hashed password
+        string hashedInputPassword = HashPassword(password);
+        return hashedInputPassword == owner.PasswordHash;
     }
 
 
+    private string HashPassword(string password)
+    {
+        // Generate a random salt
+        byte[] salt;
+        new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
 
+        // Hash the password with the salt
+        var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
+        byte[] hash = pbkdf2.GetBytes(20);
+
+        // Combine the salt and hash in one array
+        byte[] hashBytes = new byte[36];
+        Array.Copy(salt, 0, hashBytes, 0, 16);
+        Array.Copy(hash, 0, hashBytes, 16, 20);
+
+        // Return the hashed password as a string
+        return Convert.ToBase64String(hashBytes);
+    }
     public async Task<bool> DeleteOwnerAsync(Guid id)
     {
         var owner = await _dbContext.Owners.FindAsync(id);

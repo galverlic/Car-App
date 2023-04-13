@@ -3,21 +3,26 @@ using Car_App.Data.Models;
 using Car_App.Data.Models.NewFolder;
 using Car_App.Data.Models.Sorting;
 using Car_App.Service.Interface;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
+using System.Security.Claims;
+using System.Text;
 
 namespace Car_App.Controllers
 {
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 
     [Route("owner")]
     [ApiController]
     public class OwnerController : ControllerBase
 
     {
-        private readonly ICarService _avtoService;
+        private readonly ICarService _carService;
 
         private readonly IOwnerService _ownerService;
         public OwnerController(IOwnerService ownerService)
@@ -74,7 +79,22 @@ namespace Car_App.Controllers
         }
 
 
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(OwnerDto ownerDto)
+        {
+            await _ownerService.RegisterAsync(ownerDto);
+            return Ok();
+        }
 
+
+        [AllowAnonymous]
+        [HttpPost("authenticate")]
+        public async Task<IActionResult> Authenticate(AuthenticateRequestDto model)
+        {
+            var response = await _ownerService.AuthenticateAsync(model);
+            return Ok(response);
+        }
 
         // CREATE NEW OWNER
 
@@ -122,5 +142,7 @@ namespace Car_App.Controllers
             await _ownerService.UpdateOwnerAsync(id, newOwner);
             return Ok(newOwner);
         }
+
+
     }
 }

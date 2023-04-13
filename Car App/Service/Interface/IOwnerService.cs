@@ -9,6 +9,9 @@ namespace Car_App.Service.Interface
     {
         public Task<PagedResult<Owner>> GetAllOwnersAsync(PaginationParameters paginationParameters, OwnerFilter filter, OwnerSortBy sortBy, SortingDirection sortingDirection);
         public Task<Owner> GetOwnerByIdAsync(Guid id);
+        public Task RegisterAsync(OwnerDto ownerDto);
+        public Task<AuthenticateResponseDto> AuthenticateAsync(AuthenticateRequestDto model);
+
         public Task<Owner> GetOwnerWithCarsByIdAsync(Guid ownerId);
 
         public Task CreateNewOwnerAsync(OwnerDto newOwner);

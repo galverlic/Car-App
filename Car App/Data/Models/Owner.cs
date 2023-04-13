@@ -1,10 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using StackExchange.Redis;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Car_App.Data.Models
 {
-    public class Owner 
+    public class Owner
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
@@ -18,9 +22,8 @@ namespace Car_App.Data.Models
         [StringLength(20, MinimumLength = 3, ErrorMessage = "The username should be between 3 and 20 characters!")]
         public string UserName { get; set; }
 
-        public byte[] PasswordHash { get; set; }
-
-        public byte[] PasswordSalt { get; set; }
+        [JsonIgnore]
+        public string PasswordHash { get; set; }
 
         [RegularExpression(@"^[^\s@]+@[^\s@]+\.[^\s@]+$", ErrorMessage = "Invalid email format")]
         public string Email { get; set; }
@@ -35,6 +38,6 @@ namespace Car_App.Data.Models
 
         public Owner() { }
 
-       
+
     }
 }
