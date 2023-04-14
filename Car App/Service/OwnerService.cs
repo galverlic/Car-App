@@ -264,6 +264,9 @@ public class OwnerService : IOwnerService
             owner.LastName = newOwner.LastName;
             owner.Emso = newOwner.Emso;
             owner.TelephoneNumber = newOwner.TelephoneNumber;
+            owner.Email = newOwner.Email;
+            owner.UserName = newOwner.UserName;
+            owner.PasswordHash = newOwner.Password;
 
 
             // remove existing cars
