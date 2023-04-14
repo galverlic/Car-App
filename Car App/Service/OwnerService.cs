@@ -3,8 +3,10 @@ using Car_App.Data.Context;
 using Car_App.Data.Models;
 using Car_App.Data.Models.NewFolder;
 using Car_App.Data.Models.Sorting;
+using Car_App.Helpers;
 using Car_App.Service.Interface;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -15,13 +17,14 @@ using WebApi.Helpers;
 public class OwnerService : IOwnerService
 {
     private readonly DatabaseContext _dbContext;
-    private readonly AppSettings _appSettings;
+    private readonly JwtSettings _jwtSettings;
 
 
 
-    public OwnerService(DatabaseContext dbContext)
+    public OwnerService(DatabaseContext dbContext, IOptions<JwtSettings> jwtSettings)
     {
         _dbContext = dbContext;
+        _jwtSettings = jwtSettings.Value;
 
     }
 
@@ -139,7 +142,10 @@ public class OwnerService : IOwnerService
         {
             FirstName = ownerDto.FirstName,
             LastName = ownerDto.LastName,
+            UserName = ownerDto.UserName,
             Email = ownerDto.Email,
+            Emso = ownerDto.Emso,
+            TelephoneNumber = ownerDto.TelephoneNumber,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(ownerDto.Password)
         };
         await _dbContext.Owners.AddAsync(owner);
@@ -193,7 +199,7 @@ public class OwnerService : IOwnerService
     private string GenerateJwtToken(Owner owner)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+        var key = Encoding.ASCII.GetBytes(_jwtSettings.SecretKey);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
@@ -285,7 +291,7 @@ public class OwnerService : IOwnerService
             return false;
         }
 
-        
+
 
     }
     public async Task<IEnumerable<Car>> GetCarsByOwnerIdAsync(Guid ownerId)
