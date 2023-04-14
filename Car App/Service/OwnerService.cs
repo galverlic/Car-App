@@ -10,7 +10,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 using WebApi.Helpers;
 
@@ -40,10 +39,6 @@ public class OwnerService : IOwnerService
         var totalPages = (int)Math.Ceiling((double)totalCount / paginationParameters.PageSize);
         var hasNextPage = (paginationParameters.Page < totalPages);
 
-        //if (paginationParameters.Page > totalPages)
-        //{
-        //    paginationParameters.Page = totalPages;
-        //}
 
         var owners = await query.Include(o => o.Cars)
                                 .Skip((paginationParameters.Page - 1) * paginationParameters.PageSize)
@@ -187,24 +182,6 @@ public class OwnerService : IOwnerService
 
 
 
-    private string HashPassword(string password)
-    {
-        // Generate a random salt
-        byte[] salt;
-        new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
-
-        // Hash the password with the salt
-        var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
-        byte[] hash = pbkdf2.GetBytes(20);
-
-        // Combine the salt and hash in one array
-        byte[] hashBytes = new byte[36];
-        Array.Copy(salt, 0, hashBytes, 0, 16);
-        Array.Copy(hash, 0, hashBytes, 16, 20);
-
-        // Return the hashed password as a string
-        return Convert.ToBase64String(hashBytes);
-    }
     public async Task<bool> DeleteOwnerAsync(Guid id)
     {
         var owner = await _dbContext.Owners.FindAsync(id);

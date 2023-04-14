@@ -75,7 +75,7 @@
             return CarDtos;
         }
 
-        // CREATE NEW OWNER
+        // REGISTER NEW OWNER
 
         /// <summary>
         /// Register a new owner
