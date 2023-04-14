@@ -212,12 +212,7 @@ public class OwnerService : IOwnerService
         return tokenHandler.WriteToken(token);
     }
 
-    private bool VerifyPassword(Owner owner, string password)
-    {
-        // Hash the provided password and compare it to the stored hashed password
-        string hashedInputPassword = HashPassword(password);
-        return hashedInputPassword == owner.PasswordHash;
-    }
+
 
 
     private string HashPassword(string password)

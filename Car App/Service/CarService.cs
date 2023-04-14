@@ -22,7 +22,7 @@ namespace Car_App.Services
         {
 
 
-            var query = _dbContext.Cars.AsQueryable();
+            var query = _dbContext.Cars.Include(o => o.Owner).AsQueryable();
 
 
             query = ApplyFiltering(query, filter);
