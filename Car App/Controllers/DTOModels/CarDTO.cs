@@ -14,7 +14,6 @@ namespace Car_App.Controllers.DTOModels
         public string Model { get; init; }
 
         [Range(1950, 2023, ErrorMessage = "The year must be between 1950 and 2023.")]
-
         public int Year { get; init; }
 
         [Range(0, 1000000, ErrorMessage = "The distance driven should be between 0 and 1000000")]

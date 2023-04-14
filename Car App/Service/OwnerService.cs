@@ -135,66 +135,38 @@ public class OwnerService : IOwnerService
         return await _dbContext.Owners.FindAsync(id);
     }
 
-    public async Task RegisterAsync(OwnerDto ownerDto)
+    public async Task RegisterAsync(RegisterOwnerDto registerOwnerDto)
     {
         // Map the DTO to the entity and save to the database
         var owner = new Owner
         {
-            FirstName = ownerDto.FirstName,
-            LastName = ownerDto.LastName,
-            UserName = ownerDto.UserName,
-            Email = ownerDto.Email,
-            Emso = ownerDto.Emso,
-            TelephoneNumber = ownerDto.TelephoneNumber,
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword(ownerDto.Password)
+            FirstName = registerOwnerDto.FirstName,
+            LastName = registerOwnerDto.LastName,
+            UserName = registerOwnerDto.UserName,
+            Email = registerOwnerDto.Email,
+            Emso = registerOwnerDto.Emso,
+            TelephoneNumber = registerOwnerDto.TelephoneNumber,
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(registerOwnerDto.Password)
         };
         await _dbContext.Owners.AddAsync(owner);
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task CreateNewOwnerAsync(OwnerDto newOwner)
-    {
-        Owner owner = new Owner
-        {
-            FirstName = newOwner.FirstName,
-            LastName = newOwner.LastName,
-            UserName = newOwner.UserName,
-            Email = newOwner.Email,
-            Emso = newOwner.Emso,
-            TelephoneNumber = newOwner.TelephoneNumber
-        };
 
-        // Hash the password before storing it in the database
-        owner.PasswordHash = HashPassword(newOwner.Password);
-
-        if (newOwner.CarIds != null)
-        {
-            foreach (Guid carId in newOwner.CarIds)
-            {
-                Car car = await _dbContext.Cars.FindAsync(carId);
-                if (car != null)
-                {
-                    owner.Cars.Add(car);
-                }
-            }
-        }
-
-        await _dbContext.Owners.AddAsync(owner);
-        await _dbContext.SaveChangesAsync();
-    }
 
     public async Task<AuthenticateResponseDto> AuthenticateAsync(AuthenticateRequestDto model)
     {
         var owner = await _dbContext.Owners.SingleOrDefaultAsync(x => x.UserName == model.Username);
 
         if (owner == null || !BCrypt.Net.BCrypt.Verify(model.Password, owner.PasswordHash))
-            throw new AppException("Email or password is incorrect");
+            throw new AppException(401, "Incorrect username or password");
 
         // Authentication successful, generate JWT token
         var token = GenerateJwtToken(owner);
 
         return new AuthenticateResponseDto(owner, token);
     }
+
 
     private string GenerateJwtToken(Owner owner)
     {

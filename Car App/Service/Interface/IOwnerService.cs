@@ -9,12 +9,11 @@ namespace Car_App.Service.Interface
     {
         public Task<PagedResult<Owner>> GetAllOwnersAsync(PaginationParameters paginationParameters, OwnerFilter filter, OwnerSortBy sortBy, SortingDirection sortingDirection);
         public Task<Owner> GetOwnerByIdAsync(Guid id);
-        public Task RegisterAsync(OwnerDto ownerDto);
+        public Task RegisterAsync(RegisterOwnerDto registerOwnerDto);
         public Task<AuthenticateResponseDto> AuthenticateAsync(AuthenticateRequestDto model);
 
         public Task<Owner> GetOwnerWithCarsByIdAsync(Guid ownerId);
 
-        public Task CreateNewOwnerAsync(OwnerDto newOwner);
         public Task<bool> DeleteOwnerAsync(Guid id);
         public Task<bool> UpdateOwnerAsync(Guid id, OwnerDto newOwner);
         public Task<IEnumerable<Car>> GetCarsByOwnerIdAsync(Guid ownerId);

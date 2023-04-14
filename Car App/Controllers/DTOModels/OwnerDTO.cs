@@ -14,7 +14,6 @@ public class OwnerDto
     [StringLength(20, MinimumLength = 3, ErrorMessage = "The username should be between 3 and 20 characters!")]
     public string UserName { get; set; }
 
-
     [RegularExpression(@"^(?=.*\d).{1,}$", ErrorMessage = "Password must contain at least one numeric character")]
     public string Password { get; set; }
 

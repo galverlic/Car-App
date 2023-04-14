@@ -3,14 +3,14 @@ using Car_App.Helpers;
 using Car_App.Service.Interface;
 using Car_App.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
-
-
+using WebApi.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -103,7 +103,32 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        context.Response.ContentType = "application/json";
+        var error = context.Features.Get<IExceptionHandlerFeature>().Error;
 
+        if (error is AppException appException)
+        {
+            context.Response.StatusCode = appException.StatusCode;
+            await context.Response.WriteAsync(new ErrorResponse
+            {
+                Message = appException.Message,
+                Status = appException.StatusCode
+            }.ToString());
+        }
+        else
+        {
+            context.Response.StatusCode = 401;
+            await context.Response.WriteAsync(new ErrorResponse
+            {
+                Message = "Incorrect username or password"
+            }.ToString());
+        }
+    });
+});
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseCors(builder => builder

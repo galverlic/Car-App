@@ -1,20 +1,15 @@
 ﻿namespace Car_App.Controllers
 
-{ 
-using Car_App.Controllers.DTOModels;
-using Car_App.Data.Models;
-using Car_App.Data.Models.NewFolder;
-using Car_App.Data.Models.Sorting;
-using Car_App.Service.Interface;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+{
+    using Car_App.Controllers.DTOModels;
+    using Car_App.Data.Models;
+    using Car_App.Data.Models.NewFolder;
+    using Car_App.Data.Models.Sorting;
+    using Car_App.Service.Interface;
 
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Net;
-using System.Security.Claims;
-using System.Text;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+    using System.Net;
 
 
     [Authorize]
@@ -80,16 +75,28 @@ using System.Text;
             return CarDtos;
         }
 
+        // CREATE NEW OWNER
+
+        /// <summary>
+        /// Register a new owner
+        /// </summary>
+        /// <returns>The details of the newly created owner</returns>
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<IActionResult> Register(OwnerDto ownerDto)
+        public async Task<IActionResult> Register(RegisterOwnerDto registerOwnerDto)
         {
-            await _ownerService.RegisterAsync(ownerDto);
+            await _ownerService.RegisterAsync(registerOwnerDto);
             return Ok();
         }
 
+        // LOGIN OWNER
 
+        /// <summary>
+        /// Login with username and password
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("authenticate")]
         public async Task<IActionResult> Authenticate(AuthenticateRequestDto model)
@@ -98,18 +105,8 @@ using System.Text;
             return Ok(response);
         }
 
-        // CREATE NEW OWNER
 
-        /// <summary>
-        /// Creates a new owner
-        /// </summary>
-        /// <returns>The details of the newly created owner</returns>
-        [HttpPost("create-new-owner")]
-        public async Task<ActionResult> CreateNewOwner([FromBody] OwnerDto newOwner)
-        {
-            await _ownerService.CreateNewOwnerAsync(newOwner);
-            return Created("", newOwner);
-        }
+
 
         // DELETE OWNER BY ID
 
