@@ -4,7 +4,6 @@ using Car_App.Data.Models;
 using Car_App.Data.Models.Filtering;
 using Car_App.Data.Models.Sorting;
 using Car_App.Service.Interface;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Car_App.Services
@@ -131,18 +130,7 @@ namespace Car_App.Services
             return await _dbContext.Cars.FindAsync(id);
         }
 
-        public async Task<IEnumerable<Car>> GetCar([FromQuery] int count)
-        {
-            Car[] car =
-            {
-                new() { Title = "Citroen C-Elysee Seduction HDi 92 BVM"},
-                new() { Title = "Renault Twingo 1.2 16V .TEMPOMAT.."},
-                new() { Title = "Audi Q3 35 TFSI S-Tronic Advanced 150KM COCKPIT Full LED"}
 
-            };
-
-            return car.Take(count);
-        }
 
         public async Task CreateNewCarAsync(CarDto newAvto)
         {

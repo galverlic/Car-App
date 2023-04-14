@@ -58,24 +58,6 @@ namespace Car_App.Controllers
             return car;
         }
 
-        /// <summary>
-        /// Number of cars in the database
-        /// </summary>
-        /// <returns>Number of cars in the database</returns>
-        // getter number of cars
-        [HttpGet("get-number-of-cars/{count}")]
-        public ActionResult GetCar([FromQuery] int count)
-        {
-            Car[] avto =
-            {
-                new() { Title = "Citroen C-Elysee Seduction HDi 92 BVM"},
-                new() { Title = "Renault Twingo 1.2 16V .TEMPOMAT.."},
-                new() { Title = "Audi Q3 35 TFSI S-Tronic Advanced 150KM COCKPIT Full LED"}
-
-            };
-
-            return Ok(avto.Take(count));
-        }
 
         // create a new car
         /// <summary>

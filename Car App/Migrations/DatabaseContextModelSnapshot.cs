@@ -69,7 +69,7 @@ namespace Car_App.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("Cars");
+                    b.ToTable("Cars", (string)null);
                 });
 
             modelBuilder.Entity("Car_App.Data.Models.Owner", b =>
@@ -113,7 +113,7 @@ namespace Car_App.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Owners");
+                    b.ToTable("Owners", (string)null);
                 });
 
             modelBuilder.Entity("Car_App.Data.Models.Car", b =>

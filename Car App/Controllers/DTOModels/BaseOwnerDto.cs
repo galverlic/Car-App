@@ -22,7 +22,6 @@ namespace Car_App.Controllers.DTOModels
         [StringLength(13, MinimumLength = 13, ErrorMessage = "There should be 13 digits!")]
         public string Emso { get; set; }
 
-
         [StringLength(9, MinimumLength = 9, ErrorMessage = "There should be 9 digits!")]
         public string TelephoneNumber { get; set; }
     }
