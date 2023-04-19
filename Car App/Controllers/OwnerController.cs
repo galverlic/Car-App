@@ -50,7 +50,7 @@
         /// </summary>
         /// <returns>A list of cars owned by the specified owner</returns>
 
-        [HttpGet("{owner-id}/cars")]
+        [HttpGet("owner-id/cars")]
         public async Task<ActionResult<List<CarDto>>> GetCarsByOwnerId(Guid ownerId)
         {
             var owner = await _ownerService.GetOwnerWithCarsByIdAsync(ownerId);

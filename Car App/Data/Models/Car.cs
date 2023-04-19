@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Car_App.Data.Models
 {
@@ -33,6 +34,7 @@ namespace Car_App.Data.Models
         public int YearOfRegistration { get; set; }
         public int YearOfFirstService { get; set; }
         public virtual Owner Owner { get; set; }
+        [JsonIgnore]
         public Guid OwnerId { get; set; }
     }
 }
