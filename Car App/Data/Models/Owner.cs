@@ -1,9 +1,4 @@
-﻿using StackExchange.Redis;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Security.Cryptography;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Car_App.Data.Models
@@ -30,7 +25,7 @@ namespace Car_App.Data.Models
 
         [StringLength(13, MinimumLength = 13, ErrorMessage = "There should be 13 digits!")]
         public string Emso { get; set; }
-
+        [JsonIgnore]
         public virtual List<Car> Cars { get; set; } = new List<Car>();
 
         [StringLength(9, MinimumLength = 9, ErrorMessage = "There should be 9 digits!")]

@@ -2,6 +2,7 @@
 {
     public class CarFilter
     {
+        public string? Title { get; set; }
         public Guid? Id { get; set; }
         public string? Make { get; set; }
         public int? Year { get; set; }

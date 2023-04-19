@@ -4,6 +4,9 @@ namespace Car_App.Data.Models.Sorting
 {
     public enum CarSortBy
     {
+        [EnumMember(Value = "Title")]
+        Title,
+
         [EnumMember(Value = "Make")]
         Make,
 

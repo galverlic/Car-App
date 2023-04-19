@@ -106,8 +106,6 @@
         }
 
 
-
-
         // DELETE OWNER BY ID
 
         /// <summary>
