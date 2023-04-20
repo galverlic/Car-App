@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Authentication;
 using System.Security.Claims;
 using System.Text;
 using WebApi.Helpers;
@@ -73,6 +74,11 @@ public class OwnerService : IOwnerService
             query = query.Where(o => o.LastName == filter.LastName);
         }
 
+        if (!string.IsNullOrEmpty(filter.UserName))
+        {
+            query = query.Where(o => o.UserName == filter.UserName);
+        }
+
         if (filter.Emso != null)
         {
             query = query.Where(o => o.Emso == filter.Emso);
@@ -132,6 +138,15 @@ public class OwnerService : IOwnerService
 
     public async Task RegisterAsync(RegisterOwnerDto registerOwnerDto)
     {
+        // Check if an owner with the same username or email already exists
+        if (await _dbContext.Owners.AnyAsync(o => o.UserName == registerOwnerDto.UserName))
+        {
+            throw new AuthenticationException($"Username '{registerOwnerDto.UserName}' is already taken.");
+        }
+        if (await _dbContext.Owners.AnyAsync(o => o.Email == registerOwnerDto.Email))
+        {
+            throw new AuthenticationException($"Email '{registerOwnerDto.Email}' is already registered.");
+        }
         // Map the DTO to the entity and save to the database
         var owner = new Owner
         {
@@ -146,6 +161,7 @@ public class OwnerService : IOwnerService
         await _dbContext.Owners.AddAsync(owner);
         await _dbContext.SaveChangesAsync();
     }
+
 
 
 
