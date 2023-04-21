@@ -1,14 +1,16 @@
-﻿namespace Car_App.Controllers
+﻿
+using Car_App.Controllers.DTOModels;
+using Car_App.Data.Models;
+using Car_App.Data.Models.NewFolder;
+using Car_App.Data.Models.Sorting;
+using Car_App.Service.Interface;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Net;
+
+namespace Car_App.Controllers
 
 {
-    using Car_App.Controllers.DTOModels;
-    using Car_App.Data.Models;
-    using Car_App.Data.Models.NewFolder;
-    using Car_App.Data.Models.Sorting;
-    using Car_App.Service.Interface;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
-    using System.Net;
 
 
     [Authorize]
@@ -59,6 +61,7 @@
                 return NotFound();
             }
 
+            // daj to v service
             var CarDtos = owner.Cars.Select(car => new CarDto
             {
                 Title = car.Title,

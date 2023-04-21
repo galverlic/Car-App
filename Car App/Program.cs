@@ -33,9 +33,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         {
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.SecretKey)),
-            ValidateIssuer = false, // check
+            ValidateIssuer = true,
             ValidIssuer = jwtSettings.Issuer,
-            ValidateAudience = false,// check
+            ValidateAudience = true,
             ValidAudience = jwtSettings.Audience,
             ClockSkew = TimeSpan.Zero
         };
