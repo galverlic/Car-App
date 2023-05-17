@@ -22,6 +22,13 @@ namespace Car_App.Data.Models
         [JsonIgnore]
         public string PasswordHash { get; set; }
 
+
+
+
+
+
+
+
         [RegularExpression(@"^[^\s@]+@[^\s@]+\.[^\s@]+$", ErrorMessage = "Invalid email format")]
         public string Email { get; set; }
 
