@@ -92,11 +92,12 @@ namespace CarApp.Tests.Controller
             var result = await controller.CreateNewCar(newCarDto);
 
             // Assert
-            var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result);
-            var returnedCarDto = Assert.IsType<CarDto>(createdAtActionResult.Value);
+            var createdResult = Assert.IsType<CreatedResult>(result);
+            var returnedCarDto = Assert.IsType<CarDto>(createdResult.Value);
             Assert.Equal(newCarDto.OwnerId, returnedCarDto.OwnerId);
 
             _carServiceMock.Verify(service => service.CreateNewCarAsync(newCarDto), Times.Once());
+
         }
 
         [Fact]
