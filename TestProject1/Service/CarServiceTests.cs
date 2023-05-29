@@ -349,6 +349,12 @@ namespace Car_App.Tests
             Assert.Equal(updatedCarDto.OwnerId, updatedCar.OwnerId);
         }
 
+//        public CarServiceTests()
+//        {
+//            // Mock the database context for CarService
+//            _mockContext = new Mock<DatabaseContext>();
+//            _carService = new CarService(_mockContext.Object);
+//        }
 
     }
 }
