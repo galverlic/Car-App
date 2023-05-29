@@ -1,10 +1,13 @@
 ﻿using Car_App.Controllers;
 using Car_App.Controllers.DTOModels;
+using Car_App.Data.Context;
 using Car_App.Data.Models;
 using Car_App.Data.Models.Filtering;
 using Car_App.Data.Models.Sorting;
 using Car_App.Service.Interface;
+using Car_App.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 
 namespace CarApp.Tests.Controller
@@ -77,7 +80,6 @@ namespace CarApp.Tests.Controller
 
             _carServiceMock.Verify(service => service.GetCarByIdAsync(expectedCar.Id), Times.Once());
         }
-
         [Fact]
         public async Task CreateNewCar_Returns_CreatedAtActionResult()
         {
@@ -92,11 +94,12 @@ namespace CarApp.Tests.Controller
             var result = await controller.CreateNewCar(newCarDto);
 
             // Assert
-            var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result);
-            var returnedCarDto = Assert.IsType<CarDto>(createdAtActionResult.Value);
+            var createdResult = Assert.IsType<CreatedResult>(result);
+            var returnedCarDto = Assert.IsType<CarDto>(createdResult.Value);
             Assert.Equal(newCarDto.OwnerId, returnedCarDto.OwnerId);
 
             _carServiceMock.Verify(service => service.CreateNewCarAsync(newCarDto), Times.Once());
+
         }
 
         [Fact]

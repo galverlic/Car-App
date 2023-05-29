@@ -132,18 +132,18 @@ namespace Car_App.Services
 
 
 
-        public async Task CreateNewCarAsync(CarDto newAvto)
+        public async Task CreateNewCarAsync(CarDto newCar)
         {
-            var newOwner = await _dbContext.Owners.FindAsync(newAvto.OwnerId);
+            var newOwner = await _dbContext.Owners.FindAsync(newCar.OwnerId);
             Car Item = new Car
             {
-                Title = newAvto.Title,
-                Make = newAvto.Make,
-                Model = newAvto.Model,
-                Year = newAvto.Year,
-                Distance = newAvto.Distance,
-                FuelType = newAvto.FuelType,
-                Power = newAvto.Power,
+                Title = newCar.Title,
+                Make = newCar.Make,
+                Model = newCar.Model,
+                Year = newCar.Year,
+                Distance = newCar.Distance,
+                FuelType = newCar.FuelType,
+                Power = newCar.Power,
                 OwnerId = newOwner.Id
             };
 

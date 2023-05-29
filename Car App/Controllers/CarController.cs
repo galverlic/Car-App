@@ -66,10 +66,10 @@ namespace Car_App.Controllers
         /// <returns>New car added to the database</returns>
         [HttpPost]
 
-        public async Task<ActionResult> CreateNewCar([FromBody] CarDto newAvto)
+        public async Task<ActionResult> CreateNewCar([FromBody] CarDto newCar)
         {
-            await _carService.CreateNewCarAsync(newAvto);
-            return Created("", newAvto);
+            await _carService.CreateNewCarAsync(newCar);
+            return Created("", newCar);
         }
 
         // delete a car by ID
