@@ -22,10 +22,10 @@ public class OwnerServiceTests
 
         _mockSetCar = new Mock<DbSet<Car>>();
         _mockContext = new Mock<DatabaseContext>();
-        _jwtSettings = Options.Create(new JwtSettings()); // Assuming JwtSettings is a simple POCO
+        _jwtSettings = Options.Create(new JwtSettings());
         _ownerId = Guid.NewGuid();
         _owner = new Owner { Id = _ownerId };
-        _cars = new List<Car> // Instantiate _cars list here
+        _cars = new List<Car>
     {
         new Car { OwnerId = _ownerId },
         new Car { OwnerId = _ownerId }
