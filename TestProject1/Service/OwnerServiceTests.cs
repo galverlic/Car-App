@@ -53,7 +53,7 @@ public class OwnerServiceTests
     {
         // Arrange
         _mockContext.Setup(x => x.Cars).ReturnsDbSet(_cars);
-        var service = new OwnerService(_mockContext.Object, _jwtSettings);
+        var service = new OwnerService(_mockContext.Object, null);
 
         // Act
         var result = await service.GetCarsByOwnerIdAsync(_ownerId);

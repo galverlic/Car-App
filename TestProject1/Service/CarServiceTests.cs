@@ -5,16 +5,7 @@ using Car_App.Data.Models.Filtering;
 using Car_App.Data.Models.Sorting;
 using Car_App.Service.Interface;
 using Car_App.Services;
-using Moq;
-using System.Collections.Generic;
-using System.Linq;
-using Xunit;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Routing;
-using Pipelines.Sockets.Unofficial.Buffers;
 
 namespace Car_App.Tests
 {
@@ -197,7 +188,7 @@ namespace Car_App.Tests
             Assert.NotNull(result);
             Assert.Equal(existingId, result.Id);
         }
-        
+
 
         [Fact]
         public async Task CreateNewCarServiceTest()
@@ -214,7 +205,7 @@ namespace Car_App.Tests
                 Distance = 1000,
                 FuelType = "Gasoline",
                 Power = 140,
-                OwnerId = owner1Id // ensure this owner id exists in your test data
+                OwnerId = owner1Id
             };
 
             // Act
@@ -281,7 +272,7 @@ namespace Car_App.Tests
         }
 
 
-      
+
 
         [Fact]
         public async Task UpdateCarServiceTest()
@@ -349,12 +340,12 @@ namespace Car_App.Tests
             Assert.Equal(updatedCarDto.OwnerId, updatedCar.OwnerId);
         }
 
-//        public CarServiceTests()
-//        {
-//            // Mock the database context for CarService
-//            _mockContext = new Mock<DatabaseContext>();
-//            _carService = new CarService(_mockContext.Object);
-//        }
+        //        public CarServiceTests()
+        //        {
+        //            // Mock the database context for CarService
+        //            _mockContext = new Mock<DatabaseContext>();
+        //            _carService = new CarService(_mockContext.Object);
+        //        }
 
     }
 }

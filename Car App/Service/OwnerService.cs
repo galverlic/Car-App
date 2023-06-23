@@ -24,7 +24,7 @@ public class OwnerService : IOwnerService
     public OwnerService(DatabaseContext dbContext, IOptions<JwtSettings> jwtSettings)
     {
         _dbContext = dbContext;
-        _jwtSettings = jwtSettings.Value;
+        _jwtSettings = jwtSettings?.Value;
 
     }
 
