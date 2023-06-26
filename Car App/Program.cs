@@ -12,81 +12,90 @@ using System.Text;
 using System.Text.Json.Serialization;
 using WebApi.Helpers;
 
-var builder = WebApplication.CreateBuilder(args);
-
-if (builder.Environment.IsDevelopment())
+namespace Car_App
 {
-    builder.Services.AddDbContext<DatabaseContext>(options =>
-        options.UseSqlServer(builder.Configuration.GetConnectionString("DatabaseContext")));
-}
-else if (builder.Environment.IsProduction())
-{
-    builder.Services.AddDbContext<DatabaseContext>(options =>
-        options.UseSqlServer(builder.Configuration.GetConnectionString("DatabaseContext")));
-}
-else if (builder.Environment.EnvironmentName == "Test")
-{
-    builder.Services.AddDbContext<DatabaseContext>(options =>
-        options.UseInMemoryDatabase("InMemoryDbForTesting"));
-}
 
-builder.Services.AddScoped<ICarService, CarService>();
-builder.Services.AddScoped<IOwnerService, OwnerService>();
 
-builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
-builder.Services.AddSingleton<JwtSettings>();
 
-if (builder.Environment.EnvironmentName != "Test")
-{
-    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        .AddJwtBearer(options =>
+    public class Program
+    {
+        public static void Main(String[] args)
         {
-            var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
-            options.TokenValidationParameters = new TokenValidationParameters
+            var builder = WebApplication.CreateBuilder(args);
+
+            if (builder.Environment.IsDevelopment())
             {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.SecretKey)),
-                ValidateIssuer = true,
-                ValidIssuer = jwtSettings.Issuer,
-                ValidateAudience = true,
-                ValidAudience = jwtSettings.Audience,
-                ClockSkew = TimeSpan.Zero
-            };
-        });
-}
+                builder.Services.AddDbContext<DatabaseContext>(options =>
+                    options.UseSqlServer(builder.Configuration.GetConnectionString("DatabaseContext")));
+            }
+            else if (builder.Environment.IsProduction())
+            {
+                builder.Services.AddDbContext<DatabaseContext>(options =>
+                    options.UseSqlServer(builder.Configuration.GetConnectionString("DatabaseContext")));
+            }
+            else if (builder.Environment.EnvironmentName == "Test")
+            {
+                builder.Services.AddDbContext<DatabaseContext>(options =>
+                    options.UseInMemoryDatabase("InMemoryDbForTesting"));
+            }
 
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
-    });
+            builder.Services.AddScoped<ICarService, CarService>();
+            builder.Services.AddScoped<IOwnerService, OwnerService>();
 
-builder.Services.AddEndpointsApiExplorer();
+            builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+            builder.Services.AddSingleton<JwtSettings>();
 
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo()
-    {
-        Title = "car",
-        Version = "version"
-    });
+            if (builder.Environment.EnvironmentName != "Test")
+            {
+                builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.SecretKey)),
+                            ValidateIssuer = true,
+                            ValidIssuer = jwtSettings.Issuer,
+                            ValidateAudience = true,
+                            ValidAudience = jwtSettings.Audience,
+                            ClockSkew = TimeSpan.Zero
+                        };
+                    });
+            }
 
-    string filePath = Path.Combine(AppContext.BaseDirectory, Assembly.GetEntryAssembly()?.GetName().Name + ".xml");
-    c.IncludeXmlComments(filePath);
+            builder.Services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+                });
 
-    // Add JWT bearer authentication
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.Http,
-        Scheme = "Bearer",
-        BearerFormat = "JWT"
-    });
+            builder.Services.AddEndpointsApiExplorer();
 
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo()
+                {
+                    Title = "car",
+                    Version = "version"
+                });
+
+                string filePath = Path.Combine(AppContext.BaseDirectory, Assembly.GetEntryAssembly()?.GetName().Name + ".xml");
+                c.IncludeXmlComments(filePath);
+
+                // Add JWT bearer authentication
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
             new OpenApiSecurityScheme
@@ -100,57 +109,63 @@ builder.Services.AddSwaggerGen(c =>
             Array.Empty<string>()
         }
     });
-});
+            });
 
-var app = builder.Build();
+            var app = builder.Build();
 
-// Build the application.
+            // Build the application.
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+            // Configure the HTTP request pipeline.
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+            app.UseExceptionHandler(errorApp =>
+            {
+                errorApp.Run(async context =>
+                {
+                    context.Response.ContentType = "application/json";
+                    var error = context.Features.Get<IExceptionHandlerFeature>().Error;
+
+                    if (error is AppException appException)
+                    {
+                        context.Response.StatusCode = appException.StatusCode;
+                        await context.Response.WriteAsync(new ErrorResponse
+                        {
+                            Message = appException.Message,
+                            Status = appException.StatusCode
+                        }.ToString());
+                    }
+                    else
+                    {
+                        context.Response.StatusCode = 401;
+                        await context.Response.WriteAsync(new ErrorResponse
+                        {
+                            Message = "Incorrect username or password"
+                        }.ToString());
+                    }
+                });
+            });
+            app.UseHttpsRedirection();
+            app.UseRouting();
+            app.UseCors(builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+
+            app.MapControllers();
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+
+            app.Run();
+
+        }
+
+    }
 }
-app.UseExceptionHandler(errorApp =>
-{
-    errorApp.Run(async context =>
-    {
-        context.Response.ContentType = "application/json";
-        var error = context.Features.Get<IExceptionHandlerFeature>().Error;
 
-        if (error is AppException appException)
-        {
-            context.Response.StatusCode = appException.StatusCode;
-            await context.Response.WriteAsync(new ErrorResponse
-            {
-                Message = appException.Message,
-                Status = appException.StatusCode
-            }.ToString());
-        }
-        else
-        {
-            context.Response.StatusCode = 401;
-            await context.Response.WriteAsync(new ErrorResponse
-            {
-                Message = "Incorrect username or password"
-            }.ToString());
-        }
-    });
-});
-app.UseHttpsRedirection();
-app.UseRouting();
-app.UseCors(builder => builder
-    .AllowAnyOrigin()
-    .AllowAnyMethod()
-    .AllowAnyHeader());
-
-app.MapControllers();
-app.UseAuthentication();
-app.UseAuthorization();
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-});
-
-app.Run();
