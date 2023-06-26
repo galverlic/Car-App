@@ -1,10 +1,13 @@
-﻿using Car_App.Data.Context; // <-- make sure to add this
+﻿using Car_App.Controllers.DTOModels;
+using Car_App.Data.Context; // <-- make sure to add this
 using Car_App.Data.Models;
+using Car_App.Service.Interface;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System.Net;
+using System.Net.Http.Headers;
 
 namespace Car_App.Tests.Controller
 {
@@ -12,6 +15,7 @@ namespace Car_App.Tests.Controller
     {
         private readonly WebApplicationFactory<Program> _factory;
         private readonly HttpClient _client;
+        private readonly IOwnerService _userService;
 
         public CarControllerIntegrationTests(WebApplicationFactory<Program> factory)
         {
@@ -40,7 +44,20 @@ namespace Car_App.Tests.Controller
                     });
                 });
             }).CreateClient();
+
+            string token;
+            using (var scope = _factory.Services.CreateScope())
+            {
+                _userService = scope.ServiceProvider.GetRequiredService<IOwnerService>();
+                var result = _userService.AuthenticateAsync(new AuthenticateRequestDto() { Password = "test132!", Username = "test" }).Result;
+                Console.WriteLine(result.Token);  // Debug line
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", result.Token);
+                Console.WriteLine(_client.DefaultRequestHeaders.Authorization);  // Debug line
+            }
+
         }
+
+
 
 
 
@@ -51,14 +68,15 @@ namespace Car_App.Tests.Controller
         public async Task GetCars_ReturnsCorrectResponse()
         {
             var response = await _client.GetAsync("/car");
-
             response.EnsureSuccessStatusCode();
 
             var stringResponse = await response.Content.ReadAsStringAsync();
-            var cars = JsonConvert.DeserializeObject<List<Car>>(stringResponse);
+            var pagedResult = JsonConvert.DeserializeObject<PagedResult<Car>>(stringResponse);
+            var cars = pagedResult.Results;
 
             Assert.NotNull(cars);
         }
+
 
         [Fact]
         public async Task GetCar_ReturnsCorrectResponse()

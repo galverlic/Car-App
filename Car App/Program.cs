@@ -81,8 +81,11 @@ namespace Car_App
                     Version = "version"
                 });
 
-                string filePath = Path.Combine(AppContext.BaseDirectory, Assembly.GetEntryAssembly()?.GetName().Name + ".xml");
-                c.IncludeXmlComments(filePath);
+                string xmlFilePath = Path.Combine(AppContext.BaseDirectory, Assembly.GetEntryAssembly()?.GetName().Name + ".xml");
+                if (File.Exists(xmlFilePath))
+                {
+                    c.IncludeXmlComments(xmlFilePath);
+                }
 
                 // Add JWT bearer authentication
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -110,6 +113,7 @@ namespace Car_App
         }
     });
             });
+
 
             var app = builder.Build();
 
