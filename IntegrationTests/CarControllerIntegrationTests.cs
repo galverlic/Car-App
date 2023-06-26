@@ -1,11 +1,11 @@
-﻿using Car_App.Data.Models;
+﻿using Car_App.Data.Context; // <-- make sure to add this
+using Car_App.Data.Models;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
 using Newtonsoft.Json;
 using System.Net;
-
 
 namespace Car_App.Tests.Controller
 {
@@ -27,21 +27,26 @@ namespace Car_App.Tests.Controller
                 builder.ConfigureServices(services =>
                 {
                     // Remove the existing context configuration and add the in-memory database context.
-                    var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<DbContext>));
+                    var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<DatabaseContext>));
 
                     if (descriptor != null)
                     {
                         services.Remove(descriptor);
                     }
 
-                    services.AddDbContext<DbContext>(options =>
+                    services.AddDbContext<DatabaseContext>(options =>
                     {
-                        options.UseInMemoryDatabase("InMemoryDb");
+                        options.UseInMemoryDatabase("InMemoryDbForTesting");
                         options.UseInternalServiceProvider(serviceProvider);
                     });
                 });
             }).CreateClient();
         }
+
+
+
+
+
 
         [Fact]
         public async Task GetCars_ReturnsCorrectResponse()

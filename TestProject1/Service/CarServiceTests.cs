@@ -205,7 +205,7 @@ namespace Car_App.Tests
                 Distance = 1000,
                 FuelType = "Gasoline",
                 Power = 140,
-                OwnerId = owner1Id
+                OwnerId = owner1Id // ensure this owner id exists in your test data
             };
 
             // Act
