@@ -247,9 +247,10 @@ namespace Car_App.Tests.Controller
                 Distance = 50000,
                 FuelType = "diesel",
                 Power = 300,
-                OwnerId = Guid.Parse("316971D9-0990-4884-B9F0-659E9877D39C") // Convert string to Guid
-            };
+                OwnerId = Guid.Parse("d6e0b9f0-8c9d-4f7a-8f0d-7b8e6a5f4c7b")
 
+            };
+            var newCarObject = JsonConvert.SerializeObject(newCar);
             var content = new StringContent(JsonConvert.SerializeObject(newCar), Encoding.UTF8, "application/json");
 
             // Act

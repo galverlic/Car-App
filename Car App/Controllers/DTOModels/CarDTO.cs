@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace Car_App.Controllers.DTOModels
 {
@@ -25,7 +24,7 @@ namespace Car_App.Controllers.DTOModels
 
         [Range(0, 1000, ErrorMessage = "The power should be between 0 and 1000 kW")]
         public double Power { get; init; }
-        [JsonIgnore]
+
         public Guid OwnerId { get; set; }
 
 
