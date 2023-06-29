@@ -270,5 +270,68 @@ namespace Car_App.Tests.Controller
 
 
         }
+
+        [Fact]
+        public async Task DeleteCar_ReturnsCorrectResponse()
+        {
+            var id = "AEB9CFC4-6A84-4DCD-BBA8-0E24D80BFF22";
+            var response = await _client.DeleteAsync($"/car/delete/{id}");
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                var stringResponse = await response.Content.ReadAsStringAsync();
+                var car = JsonConvert.DeserializeObject<Car>(stringResponse);
+
+                Assert.NotNull(car);
+                Assert.Equal(id, car.Id.ToString());
+            }
+            else
+            {
+                Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            }
+        }
+
+        [Fact]
+        public async Task UpdateCar_ReturnsCorrectResponse()
+        {
+            // Arrange
+            var id = Guid.Parse("AEB9CFC4-6A84-4DCD-BBA8-0E24D80BFF22");
+            var updatedCar = new CarDto
+            {
+                Title = "Updated Car",
+                Make = "Updated Make",
+                Model = "Updated Model",
+                Year = 2023,
+                Distance = 60000,
+                FuelType = "diesel",
+                Power = 80
+                // Assume OwnerId is the same so not updating it
+            };
+            var content = new StringContent(JsonConvert.SerializeObject(updatedCar), Encoding.UTF8, "application/json");
+
+            // Act
+            var response = await _client.PutAsync($"/car/update/{id}", content);
+
+            // Assert
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                var stringResponse = await response.Content.ReadAsStringAsync();
+                var returnedCar = JsonConvert.DeserializeObject<CarDto>(stringResponse);
+
+                Assert.NotNull(returnedCar);
+                Assert.Equal(updatedCar.Title, returnedCar.Title);
+                Assert.Equal(updatedCar.Make, returnedCar.Make);
+                Assert.Equal(updatedCar.Model, returnedCar.Model);
+                Assert.Equal(updatedCar.Year, returnedCar.Year);
+                Assert.Equal(updatedCar.Distance, returnedCar.Distance);
+                Assert.Equal(updatedCar.FuelType, returnedCar.FuelType);
+                Assert.Equal(updatedCar.Power, returnedCar.Power);
+            }
+            else
+            {
+                Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            }
+        }
+
     }
 }
