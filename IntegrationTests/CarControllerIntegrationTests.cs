@@ -1,5 +1,5 @@
 ﻿using Car_App.Controllers.DTOModels;
-using Car_App.Data.Context; // <-- make sure to add this
+using Car_App.Data.Context; 
 using Car_App.Data.Models;
 using Car_App.Service.Interface;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Headers;
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Car_App.Tests.Controller
@@ -54,25 +53,16 @@ namespace Car_App.Tests.Controller
 
             _client = appFactory.CreateClient();
 
-            using (var scope = appFactory.Server.Services.CreateScope())
-            {
-                _dbContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
-                _userService = scope.ServiceProvider.GetRequiredService<IOwnerService>();
+            using var scope = appFactory.Server.Services.CreateScope();
+            _dbContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+            _userService = scope.ServiceProvider.GetRequiredService<IOwnerService>();
 
-                SeedData();
+            SeedData();
 
-                var query = _dbContext.Cars.AsQueryable().ToList();
-                var query3 = _dbContext.Owners.AsQueryable().ToList();
+           
 
-                var result = _userService.AuthenticateAsync(new AuthenticateRequestDto() { Password = "PasswordHash1", Username = "UserName1" }).Result;
-                Console.WriteLine(result.Token);
-                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", result.Token);
-                Console.WriteLine(_client.DefaultRequestHeaders.Authorization);
-
-
-
-
-            }
+            var result = _userService.AuthenticateAsync(new AuthenticateRequestDto() { Password = "PasswordHash1", Username = "UserName1" }).Result;
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", result.Token);
 
 
         }
@@ -207,7 +197,7 @@ namespace Car_App.Tests.Controller
         [Fact]
         public async Task GetCars_ReturnsCorrectResponse()
         {
-            var response = await _client.GetAsync("/car");
+            var response = await _client.GetAsync("/cars");
             response.EnsureSuccessStatusCode();
 
             var stringResponse = await response.Content.ReadAsStringAsync();
@@ -218,26 +208,31 @@ namespace Car_App.Tests.Controller
         }
 
 
+
         [Fact]
-        public async Task GetCar_ReturnsCorrectResponse()
+        public async Task GetCar_ReturnsCorrectResponse_WhenCarExists()
         {
-            var id = "AEB9CFC4-6A84-4DCD-BBA8-0E24D80BFF22";
+            var id = "4b33a8f4-d3d6-41e2-b709-3cb5b72869f2";
             var response = await _client.GetAsync($"/car/get-car-by-id/{id}");
 
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                var stringResponse = await response.Content.ReadAsStringAsync();
-                var car = JsonConvert.DeserializeObject<Car>(stringResponse);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-                Assert.NotNull(car);
-                Assert.Equal(id, car.Id.ToString());
-            }
-            else
-            {
-                Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-            }
+            var stringResponse = await response.Content.ReadAsStringAsync();
+            var car = JsonConvert.DeserializeObject<Car>(stringResponse);
 
+            Assert.NotNull(car);
+            Assert.Equal(id, car.Id.ToString());
         }
+
+        [Fact]
+        public async Task GetCar_ReturnsNotFound_WhenCarDoesNotExist()
+        {
+            var id = Guid.NewGuid();
+            var response = await _client.GetAsync($"/car/get-car-by-id/{id}");
+
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
+
 
         [Fact]
         public async Task CreateNewCar_ReturnsCorrectResponse()
@@ -279,7 +274,7 @@ namespace Car_App.Tests.Controller
         [Fact]
         public async Task DeleteCar_ReturnsOkResponse()
         {
-            var id = CarId1;
+            var id = CarId5;
             var response = await _client.DeleteAsync($"/car/delete/{id}");
 
             var stringResponse = await response.Content.ReadAsStringAsync();

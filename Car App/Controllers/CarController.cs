@@ -28,14 +28,14 @@ namespace Car_App.Controllers
         /// Gets all cars
         /// </summary>
         /// <returns>A list of all cars in the database</returns>
-        [HttpGet()]
-
+        [HttpGet("cars")]
         public async Task<ActionResult<PagedResult<Car>>> GetCars([FromQuery] PaginationParameters paginationParameters, [FromQuery] CarFilter filter, CarSortBy sortBy, SortingDirection sortingDirection)
         {
             var result = await _carService.GetAllCarsAsync(paginationParameters, filter, sortBy, sortingDirection);
 
             return Ok(result);
         }
+
 
 
         // getter find car by ID
@@ -80,10 +80,9 @@ namespace Car_App.Controllers
         [HttpDelete("delete/{id}")]
         public async Task<ActionResult> DeleteCar(Guid id)
         {
-            var car = await _carService.DeleteCarAsync(id);
-            if (car == true)
+            if (await _carService.DeleteCarAsync(id))
             {
-                return Ok(car);
+                return Ok();
             }
             else
             {
