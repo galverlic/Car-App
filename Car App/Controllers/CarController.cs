@@ -33,7 +33,7 @@ namespace Car_App.Controllers
         {
             var result = await _carService.GetAllCarsAsync(paginationParameters, filter, sortBy, sortingDirection);
 
-            return Ok(result);
+            return Ok(await _carService.GetAllCarsAsync(paginationParameters, filter, sortBy, sortingDirection));
         }
 
 
@@ -78,17 +78,20 @@ namespace Car_App.Controllers
         /// </summary>
         /// <returns>Deletes a car from the database</returns>
         [HttpDelete("delete/{id}")]
-        public async Task<ActionResult> DeleteCar(Guid id)
+        public async Task<ActionResult<bool>> DeleteCar(Guid id)
         {
-            if (await _carService.DeleteCarAsync(id))
+            var result = await _carService.DeleteCarAsync(id);
+
+            if (result)
             {
-                return Ok();
+                return Ok(result);
             }
             else
             {
-                return NotFound(HttpStatusCode.NotModified);
+                return NotFound();
             }
         }
+
 
         // update a car by it's ID
         /// <summary>

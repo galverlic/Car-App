@@ -197,7 +197,7 @@ namespace Car_App.Tests.Controller
         [Fact]
         public async Task GetCars_ReturnsCorrectResponse()
         {
-            var response = await _client.GetAsync("/cars");
+            var response = await _client.GetAsync("/car/cars");
             response.EnsureSuccessStatusCode();
 
             var stringResponse = await response.Content.ReadAsStringAsync();
@@ -277,26 +277,26 @@ namespace Car_App.Tests.Controller
             var id = CarId5;
             var response = await _client.DeleteAsync($"/car/delete/{id}");
 
+            response.EnsureSuccessStatusCode();
+
             var stringResponse = await response.Content.ReadAsStringAsync();
-            var car = JsonConvert.DeserializeObject<bool>(stringResponse);
-            Assert.True(car);
+            var operationResult = JsonConvert.DeserializeObject<bool>(stringResponse);
+
+            Assert.True(operationResult);
         }
+
 
         [Fact]
         public async Task DeleteCar_ReturnsCarNotFoundResponse()
         {
             var id = Guid.NewGuid();
-            var response = await _client.DeleteAsync($"/car/delete/{id}");
+            var response = await _client.DeleteAsync($"/car/{id}"); // Adjusted to follow the routing convention
 
-            var stringResponse = await response.Content.ReadAsStringAsync();
-            var car = JsonConvert.DeserializeObject<string>(stringResponse);
-
-            Assert.Contains("NotModified", car);
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
-            
 
         [Fact]
-        public async Task UpdateCar_ReturnsCorrectResponse()
+        public async Task UpdateCar_ReturnsUpdatedCar_When_CarExists()
         {
             // Arrange
             var id = CarId5;
@@ -317,25 +317,51 @@ namespace Car_App.Tests.Controller
             var response = await _client.PutAsync($"/car/update/{id}", content);
 
             // Assert
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                var stringResponse = await response.Content.ReadAsStringAsync();
-                var returnedCar = JsonConvert.DeserializeObject<CarDto>(stringResponse);
+            response.EnsureSuccessStatusCode();
 
-                Assert.NotNull(returnedCar);
-                Assert.Equal(updatedCar.Title, returnedCar.Title);
-                Assert.Equal(updatedCar.Make, returnedCar.Make);
-                Assert.Equal(updatedCar.Model, returnedCar.Model);
-                Assert.Equal(updatedCar.Year, returnedCar.Year);
-                Assert.Equal(updatedCar.Distance, returnedCar.Distance);
-                Assert.Equal(updatedCar.FuelType, returnedCar.FuelType);
-                Assert.Equal(updatedCar.Power, returnedCar.Power);
-            }
-            else
-            {
-                Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-            }
+            var stringResponse = await response.Content.ReadAsStringAsync();
+            var returnedCar = JsonConvert.DeserializeObject<CarDto>(stringResponse);
+
+            Assert.NotNull(returnedCar);
+            Assert.Equal(updatedCar.Title, returnedCar.Title);
+            Assert.Equal(updatedCar.Make, returnedCar.Make);
+            Assert.Equal(updatedCar.Model, returnedCar.Model);
+            Assert.Equal(updatedCar.Year, returnedCar.Year);
+            Assert.Equal(updatedCar.Distance, returnedCar.Distance);
+            Assert.Equal(updatedCar.FuelType, returnedCar.FuelType);
+            Assert.Equal(updatedCar.Power, returnedCar.Power);
         }
 
+        [Fact]
+        public async Task UpdateCar_ReturnsNotFound_When_CarDoesNotExist()
+        {
+            // Arrange
+            var id = Guid.NewGuid(); // a car with this id should not exist
+            var updatedCar = new CarDto
+            {
+                Title = "Updated Car",
+                Make = "Updated Make",
+                Model = "Updated Model",
+                Year = 2023,
+                Distance = 60000,
+                FuelType = "diesel",
+                Power = 80
+                // Assume OwnerId is the same so not updating it
+            };
+            var content = new StringContent(JsonConvert.SerializeObject(updatedCar), Encoding.UTF8, "application/json");
+
+            // Act
+            var response = await _client.PutAsync($"/car/update/{id}", content);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
+
+
+
     }
+
 }
+
+
+

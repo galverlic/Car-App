@@ -101,7 +101,6 @@ namespace CarApp.Tests.Controller
             _carServiceMock.Verify(service => service.CreateNewCarAsync(newCarDto), Times.Once());
 
         }
-
         [Fact]
         public async Task DeleteCar_Returns_OkResult_When_CarExists()
         {
@@ -116,12 +115,16 @@ namespace CarApp.Tests.Controller
             var result = await controller.DeleteCar(carId);
 
             // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result);
+            var actionResult = Assert.IsType<ActionResult<bool>>(result);
+            Assert.True(actionResult.Result is OkObjectResult);
+
+            var okResult = actionResult.Result as OkObjectResult;
             var returnedValue = Assert.IsType<bool>(okResult.Value);
             Assert.True(returnedValue);
 
             _carServiceMock.Verify(service => service.DeleteCarAsync(carId), Times.Once());
         }
+
         [Fact]
         public async Task UpdateCar_Returns_OkResult()
         {
