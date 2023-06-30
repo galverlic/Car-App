@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Headers;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Car_App.Tests.Controller
@@ -18,6 +19,8 @@ namespace Car_App.Tests.Controller
         private readonly HttpClient _client;
         private readonly IOwnerService _userService;
         private readonly DatabaseContext _dbContext;
+        private Guid CarId1 { get; set; }
+        private Guid CarId5 { get; set; }
 
         public CarControllerIntegrationTests(WebApplicationFactory<Program> factory)
         {
@@ -118,7 +121,7 @@ namespace Car_App.Tests.Controller
             // Create sample cars
             var car1 = new Car()
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("AEB9CFC4-6A84-4DCD-BBA8-0E24D80BFF22"),
                 Title = "Tesla Model 3",
                 Make = "Tesla",
                 Model = "Model 3",
@@ -130,6 +133,7 @@ namespace Car_App.Tests.Controller
                 YearOfRegistration = 2020,
                 YearOfFirstService = 2021
             };
+            CarId1 = car1.Id;
             var car2 = new Car()
             {
                 Id = Guid.NewGuid(),
@@ -177,7 +181,7 @@ namespace Car_App.Tests.Controller
 
             var car5 = new Car()
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("4b33a8f4-d3d6-41e2-b709-3cb5b72869f2"),
                 Title = "Nissan Leaf",
                 Make = "Nissan",
                 Model = "Leaf",
@@ -189,6 +193,7 @@ namespace Car_App.Tests.Controller
                 YearOfRegistration = 2016,
                 YearOfFirstService = 2017
             };
+            CarId5 = car5.Id;
 
 
             // Add the data to the database context
@@ -272,30 +277,34 @@ namespace Car_App.Tests.Controller
         }
 
         [Fact]
-        public async Task DeleteCar_ReturnsCorrectResponse()
+        public async Task DeleteCar_ReturnsOkResponse()
         {
-            var id = "AEB9CFC4-6A84-4DCD-BBA8-0E24D80BFF22";
+            var id = CarId1;
             var response = await _client.DeleteAsync($"/car/delete/{id}");
 
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                var stringResponse = await response.Content.ReadAsStringAsync();
-                var car = JsonConvert.DeserializeObject<Car>(stringResponse);
-
-                Assert.NotNull(car);
-                Assert.Equal(id, car.Id.ToString());
-            }
-            else
-            {
-                Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-            }
+            var stringResponse = await response.Content.ReadAsStringAsync();
+            var car = JsonConvert.DeserializeObject<bool>(stringResponse);
+            Assert.True(car);
         }
+
+        [Fact]
+        public async Task DeleteCar_ReturnsCarNotFoundResponse()
+        {
+            var id = Guid.NewGuid();
+            var response = await _client.DeleteAsync($"/car/delete/{id}");
+
+            var stringResponse = await response.Content.ReadAsStringAsync();
+            var car = JsonConvert.DeserializeObject<string>(stringResponse);
+
+            Assert.Contains("NotModified", car);
+        }
+            
 
         [Fact]
         public async Task UpdateCar_ReturnsCorrectResponse()
         {
             // Arrange
-            var id = Guid.Parse("AEB9CFC4-6A84-4DCD-BBA8-0E24D80BFF22");
+            var id = CarId5;
             var updatedCar = new CarDto
             {
                 Title = "Updated Car",

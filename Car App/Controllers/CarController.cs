@@ -99,8 +99,10 @@ namespace Car_App.Controllers
         [HttpPut("update/{id}")]
         public async Task<ActionResult> UpdateCar([FromBody] CarDto newCar, Guid id)
         {
-            await _carService.UpdateCarAsync(id, newCar);
-            return Ok(newCar);
+            if (await _carService.UpdateCarAsync(id, newCar))
+                return Ok(newCar);
+            else
+                return NotFound(HttpStatusCode.NotModified);
         }
 
     }
