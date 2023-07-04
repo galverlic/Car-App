@@ -1,5 +1,5 @@
 ﻿using Car_App.Controllers.DTOModels;
-using Car_App.Data.Context; 
+using Car_App.Data.Context;
 using Car_App.Data.Models;
 using Car_App.Service.Interface;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -59,7 +59,7 @@ namespace Car_App.Tests.CarIntegrationTest
 
             SeedData();
 
-           
+
 
             var result = _userService.AuthenticateAsync(new AuthenticateRequestDto() { Password = "PasswordHash1", Username = "UserName1" }).Result;
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", result.Token);
@@ -250,7 +250,6 @@ namespace Car_App.Tests.CarIntegrationTest
                 OwnerId = Guid.Parse("d6e0b9f0-8c9d-4f7a-8f0d-7b8e6a5f4c7b")
 
             };
-            var newCarObject = JsonConvert.SerializeObject(newCar);
             var content = new StringContent(JsonConvert.SerializeObject(newCar), Encoding.UTF8, "application/json");
 
             // Act

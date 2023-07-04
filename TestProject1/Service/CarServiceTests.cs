@@ -11,8 +11,8 @@ namespace Car_App.Tests
 {
     public class CarServiceTests
     {
-        private ICarService _carService;
-        private DatabaseContext _dbContext;
+        private  readonly ICarService _carService;
+        private readonly DatabaseContext _dbContext;
 
         public CarServiceTests()
         {

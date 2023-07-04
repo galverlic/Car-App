@@ -111,7 +111,7 @@ namespace Car_App.Controllers
         public async Task<ActionResult> DeleteOwner(Guid id)
         {
             var owner = await _ownerService.DeleteOwnerAsync(id);
-            if (owner == true)
+            if (owner)
             {
                 return Ok(owner);
             }

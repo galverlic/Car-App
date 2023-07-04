@@ -7,12 +7,12 @@ using Car_App.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
-namespace Car_App.Tests
+namespace CarApp.UnitTests.Controller
 {
     public class OwnerControllerTests
     {
         private readonly Mock<IOwnerService> _mockOwnerService;
-        private OwnerController _ownerController;
+        private readonly OwnerController _ownerController;
 
         public OwnerControllerTests()
         {

@@ -11,7 +11,6 @@ namespace Car_App.Controllers
 {
     [Authorize]
     [ApiController]
-
     [Route("car")]
     public class CarController : ControllerBase
     {
@@ -33,7 +32,6 @@ namespace Car_App.Controllers
 
         // getter find car by ID
         [HttpGet("get-car-by-id/{id}")]
-
         public async Task<ActionResult<Car>> GetCar(Guid id)
         {
             var car = await _carService.GetCarByIdAsync(id);
@@ -46,10 +44,8 @@ namespace Car_App.Controllers
             return car;
         }
 
-
         // create a new car
         [HttpPost]
-
         public async Task<ActionResult> CreateNewCar([FromBody] CarDto newCar)
         {
             await _carService.CreateNewCarAsync(newCar);
@@ -61,26 +57,22 @@ namespace Car_App.Controllers
         [HttpDelete("delete/{id}")]
         public async Task<ActionResult<bool>> DeleteCar(Guid id)
         {
-
             if (await _carService.DeleteCarAsync(id))
 
                 return Ok(true);
 
             return NotFound();
         }
-    
 
+        // update a car by it's ID
 
-    // update a car by it's ID
-
-    [HttpPut("update/{id}")]
-    public async Task<ActionResult> UpdateCar([FromBody] CarDto newCar, Guid id)
-    {
-        if (await _carService.UpdateCarAsync(id, newCar))
-            return Ok(newCar);
-        else
-            return NotFound(HttpStatusCode.NotModified);
+        [HttpPut("update/{id}")]
+        public async Task<ActionResult> UpdateCar([FromBody] CarDto newCar, Guid id)
+        {
+            if (await _carService.UpdateCarAsync(id, newCar))
+                return Ok(newCar);
+            else
+                return NotFound(HttpStatusCode.NotModified);
+        }
     }
-
-}
 }

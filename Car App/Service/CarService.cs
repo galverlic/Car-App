@@ -165,18 +165,18 @@ namespace Car_App.Services
             }
         }
 
-        public async Task<bool> UpdateCarAsync(Guid id, CarDto newAvto)
+        public async Task<bool> UpdateCarAsync(Guid id, CarDto newCar)
         {
             var car = await _dbContext.Cars.FindAsync(id);
             if (car != null)
             {
-                car.Title = newAvto.Title;
-                car.Make = newAvto.Make;
-                car.Model = newAvto.Model;
-                car.Year = newAvto.Year;
-                car.Distance = newAvto.Distance;
-                car.FuelType = newAvto.FuelType;
-                car.Power = newAvto.Power;
+                car.Title = newCar.Title;
+                car.Make = newCar.Make;
+                car.Model = newCar.Model;
+                car.Year = newCar.Year;
+                car.Distance = newCar.Distance;
+                car.FuelType = newCar.FuelType;
+                car.Power = newCar.Power;
 
                 _dbContext.Cars.Update(car);
                 await _dbContext.SaveChangesAsync();

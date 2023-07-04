@@ -1,13 +1,10 @@
 ﻿using Car_App.Controllers;
 using Car_App.Controllers.DTOModels;
-using Car_App.Data.Context;
 using Car_App.Data.Models;
 using Car_App.Data.Models.Filtering;
 using Car_App.Data.Models.Sorting;
 using Car_App.Service.Interface;
-using Car_App.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 
 namespace CarApp.Tests.Controller
