@@ -19,10 +19,7 @@ namespace Car_App.Services
 
         public async Task<PagedResult<Car>> GetAllCarsAsync(PaginationParameters paginationParameters, CarFilter filter, CarSortBy sortBy, SortingDirection sortingDirection)
         {
-
-
             var query = _dbContext.Cars.Include(o => o.Owner).AsQueryable();
-
 
             query = ApplyFiltering(query, filter);
             query = SortCars(query, sortBy, sortingDirection);
@@ -78,10 +75,9 @@ namespace Car_App.Services
                 query = query.Where(c => c.Power == filter.Power);
             }
 
-
-
             return query;
         }
+
         private IQueryable<Car> SortCars(IQueryable<Car> query, CarSortBy sortBy, SortingDirection sortDirection)
         {
             switch (sortBy)
@@ -92,30 +88,35 @@ namespace Car_App.Services
                     else
                         query = query.OrderByDescending(c => c.Make);
                     break;
+
                 case CarSortBy.Model:
                     if (sortDirection == SortingDirection.Ascending)
                         query = query.OrderBy(c => c.Model);
                     else
                         query = query.OrderByDescending(c => c.Model);
                     break;
+
                 case CarSortBy.Year:
                     if (sortDirection == SortingDirection.Ascending)
                         query = query.OrderBy(c => c.Year);
                     else
                         query = query.OrderByDescending(c => c.Year);
                     break;
+
                 case CarSortBy.Distance:
                     if (sortDirection == SortingDirection.Ascending)
                         query = query.OrderBy(c => c.Distance);
                     else
                         query = query.OrderByDescending(c => c.Distance);
                     break;
+
                 case CarSortBy.Power:
                     if (sortDirection == SortingDirection.Ascending)
                         query = query.OrderBy(c => c.Power);
                     else
                         query = query.OrderByDescending(c => c.Power);
                     break;
+
                 default:
                     query = query.OrderBy(c => c.Year);
                     break;
@@ -124,13 +125,10 @@ namespace Car_App.Services
             return query;
         }
 
-
         public async Task<Car> GetCarByIdAsync(Guid id)
         {
             return await _dbContext.Cars.FindAsync(id);
         }
-
-
 
         public async Task CreateNewCarAsync(CarDto newCar)
         {
@@ -189,9 +187,5 @@ namespace Car_App.Services
                 return false;
             }
         }
-
-
-
-
     }
 }

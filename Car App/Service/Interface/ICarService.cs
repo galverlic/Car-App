@@ -25,9 +25,9 @@ namespace Car_App.Service.Interface
         /// <summary>
         /// Creates a new car
         /// </summary>
-        /// <param name="newAvto"></param>
+        /// <param name="newCar"></param>
         /// <returns></returns>
-        Task CreateNewCarAsync(CarDto newAvto);
+        Task CreateNewCarAsync(CarDto newCar);
         /// <summary>
         /// Deletes a car
         /// </summary>
@@ -38,8 +38,8 @@ namespace Car_App.Service.Interface
         /// Updates data of a car 
         /// </summary>
         /// <param name="id"> The input parameter is the car ID</param>
-        /// <param name="newAvto"></param>
+        /// <param name="newCar"></param>
         /// <returns></returns>
-        Task<bool> UpdateCarAsync(Guid id, CarDto newAvto);
+        Task<bool> UpdateCarAsync(Guid id, CarDto newCar);
     }
 }

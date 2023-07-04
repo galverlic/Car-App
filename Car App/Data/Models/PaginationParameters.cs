@@ -3,6 +3,7 @@
     public class PaginationParameters
     {
         private int _page = 1;
+
         public int Page
         {
             get => _page;
@@ -11,5 +12,4 @@
 
         public int PageSize { get; set; } = 10;
     }
-
 }

@@ -22,20 +22,19 @@ namespace Car_App.Data.Models
         [JsonIgnore]
         public string PasswordHash { get; set; }
 
-
         [RegularExpression(@"^[^\s@]+@[^\s@]+\.[^\s@]+$", ErrorMessage = "Invalid email format")]
         public string Email { get; set; }
 
         [StringLength(13, MinimumLength = 13, ErrorMessage = "There should be 13 digits!")]
         public string Emso { get; set; }
+
         [JsonIgnore]
         public virtual List<Car> Cars { get; set; } = new List<Car>();
 
         [StringLength(9, MinimumLength = 9, ErrorMessage = "There should be 9 digits!")]
         public string TelephoneNumber { get; set; }
 
-        public Owner() { }
-
-
+        public Owner()
+        { }
     }
 }

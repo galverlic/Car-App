@@ -1,6 +1,6 @@
-﻿namespace WebApi.Helpers
+﻿namespace Car_App.Helpers
 {
-    // custom exception class for throwing application specific exceptions (e.g. for validation) 
+    // custom exception class for throwing application specific exceptions (e.g. for validation)
     // that can be caught and handled within the application
     public class AppException : Exception
     {

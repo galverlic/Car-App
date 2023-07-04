@@ -12,20 +12,16 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Authentication;
 using System.Security.Claims;
 using System.Text;
-using WebApi.Helpers;
 
 public class OwnerService : IOwnerService
 {
     private readonly DatabaseContext _dbContext;
     private readonly JwtSettings _jwtSettings;
 
-
-
     public OwnerService(DatabaseContext dbContext, IOptions<JwtSettings> jwtSettings)
     {
         _dbContext = dbContext;
         _jwtSettings = jwtSettings?.Value;
-
     }
 
     public async Task<PagedResult<Owner>> GetAllOwnersAsync(PaginationParameters paginationParameters, OwnerFilter filter, OwnerSortBy sortBy, SortingDirection sortingDirection)
@@ -35,11 +31,9 @@ public class OwnerService : IOwnerService
         query = ApplyFiltering(query, filter);
         query = SortOwners(query, sortBy, sortingDirection);
 
-
         var totalCount = await query.CountAsync();
         var totalPages = (int)Math.Ceiling((double)totalCount / paginationParameters.PageSize);
         var hasNextPage = (paginationParameters.Page < totalPages);
-
 
         var owners = await query.Include(o => o.Cars)
                                 .Skip((paginationParameters.Page - 1) * paginationParameters.PageSize)
@@ -90,12 +84,8 @@ public class OwnerService : IOwnerService
         }
 
         return query;
-
-
-
-
-
     }
+
     private IQueryable<Owner> SortOwners(IQueryable<Owner> query, OwnerSortBy sortBy, SortingDirection sortDirection)
     {
         switch (sortBy)
@@ -106,18 +96,21 @@ public class OwnerService : IOwnerService
                 else
                     query = query.OrderByDescending(o => o.FirstName);
                 break;
+
             case OwnerSortBy.LastName:
                 if (sortDirection == SortingDirection.Ascending)
                     query = query.OrderBy(o => o.LastName);
                 else
                     query = query.OrderByDescending(o => o.LastName);
                 break;
+
             case OwnerSortBy.TelephoneNumber:
                 if (sortDirection == SortingDirection.Ascending)
                     query = query.OrderBy(o => o.TelephoneNumber);
                 else
                     query = query.OrderByDescending(o => o.TelephoneNumber);
                 break;
+
             default:
                 query = query.OrderBy(o => o.Emso);
                 break;
@@ -125,7 +118,7 @@ public class OwnerService : IOwnerService
         return query;
     }
 
-     public async Task<Owner> GetOwnerWithCarsByIdAsync(Guid id)
+    public async Task<Owner> GetOwnerWithCarsByIdAsync(Guid id)
     {
         return await _dbContext.Owners.Include(o => o.Cars).FirstOrDefaultAsync(o => o.Id == id);
     }
@@ -174,7 +167,6 @@ public class OwnerService : IOwnerService
         return new AuthenticateResponseDto(owner, token);
     }
 
-
     private string GenerateJwtToken(Owner owner)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
@@ -193,9 +185,6 @@ public class OwnerService : IOwnerService
         return tokenHandler.WriteToken(token);
     }
 
-
-
-
     public async Task<bool> DeleteOwnerAsync(Guid id)
     {
         var owner = await _dbContext.Owners.FindAsync(id);
@@ -210,7 +199,6 @@ public class OwnerService : IOwnerService
         {
             return false;
         }
-
     }
 
     public async Task<bool> UpdateOwnerAsync(Guid id, OwnerDto newOwner)
@@ -225,7 +213,6 @@ public class OwnerService : IOwnerService
             owner.Email = newOwner.Email;
             owner.UserName = newOwner.UserName;
             owner.PasswordHash = newOwner.Password;
-
 
             // remove existing cars
             owner.Cars.Clear();
@@ -251,10 +238,8 @@ public class OwnerService : IOwnerService
         {
             return false;
         }
-
-
-
     }
+
     public async Task<IEnumerable<Car>> GetCarsByOwnerIdAsync(Guid ownerId)
     {
         return await _dbContext.Cars.Where(c => c.OwnerId == ownerId).ToListAsync();

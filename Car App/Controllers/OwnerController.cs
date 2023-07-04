@@ -1,5 +1,4 @@
-﻿
-using Car_App.Controllers.DTOModels;
+﻿using Car_App.Controllers.DTOModels;
 using Car_App.Data.Models;
 using Car_App.Data.Models.NewFolder;
 using Car_App.Data.Models.Sorting;
@@ -11,10 +10,7 @@ using System.Net;
 namespace Car_App.Controllers
 
 {
-
-
     [Authorize]
-
     [Route("owner")]
     [ApiController]
     public class OwnerController : ControllerBase
@@ -23,6 +19,7 @@ namespace Car_App.Controllers
         private readonly ICarService _carService;
 
         private readonly IOwnerService _ownerService;
+
         public OwnerController(IOwnerService ownerService)
         {
             _ownerService = ownerService;
@@ -39,11 +36,8 @@ namespace Car_App.Controllers
         {
             var result = await _ownerService.GetAllOwnersAsync(paginationParameters, filter, sortBy, sortingDirection);
 
-
-
             return Ok(result);
         }
-
 
         // GET A CAR BY IT'S OWNER'S ID
         /// <summary>
@@ -107,7 +101,6 @@ namespace Car_App.Controllers
             return Ok(response);
         }
 
-
         // DELETE OWNER BY ID
 
         /// <summary>
@@ -141,7 +134,5 @@ namespace Car_App.Controllers
             await _ownerService.UpdateOwnerAsync(id, newOwner);
             return Ok(newOwner);
         }
-
-
     }
 }

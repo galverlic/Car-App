@@ -23,9 +23,6 @@ namespace Car_App.Controllers
         }
 
         // GET: api/Cars
-
-
-
         [HttpGet("cars")]
         public async Task<ActionResult<PagedResult<Car>>> GetCars([FromQuery] PaginationParameters paginationParameters, [FromQuery] CarFilter filter, CarSortBy sortBy, SortingDirection sortingDirection)
         {
@@ -34,11 +31,7 @@ namespace Car_App.Controllers
             return Ok(result);
         }
 
-
-
         // getter find car by ID
-
-
         [HttpGet("get-car-by-id/{id}")]
 
         public async Task<ActionResult<Car>> GetCar(Guid id)
@@ -55,7 +48,6 @@ namespace Car_App.Controllers
 
 
         // create a new car
-
         [HttpPost]
 
         public async Task<ActionResult> CreateNewCar([FromBody] CarDto newCar)

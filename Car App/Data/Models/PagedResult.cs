@@ -9,6 +9,5 @@
 
         public Boolean HasNextPage { get; set; }
         public IEnumerable<T> Results { get; set; }
-
     }
 }

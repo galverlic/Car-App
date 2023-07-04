@@ -10,13 +10,9 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
-using WebApi.Helpers;
 
 namespace Car_App
 {
-
-
-
     public class Program
     {
         public static void Main(String[] args)
@@ -81,7 +77,7 @@ namespace Car_App
                     Version = "version"
                 });
 
-                string xmlFilePath = Path.Combine(AppContext.BaseDirectory, Assembly.GetEntryAssembly()?.GetName().Name + ".xml");
+                var xmlFilePath = Path.Combine(AppContext.BaseDirectory, Assembly.GetEntryAssembly()?.GetName().Name + ".xml");
                 if (File.Exists(xmlFilePath))
                 {
                     c.IncludeXmlComments(xmlFilePath);
@@ -113,7 +109,6 @@ namespace Car_App
         }
     });
             });
-
 
             var app = builder.Build();
 
@@ -167,9 +162,6 @@ namespace Car_App
             });
 
             app.Run();
-
         }
-
     }
 }
-
