@@ -10,9 +10,9 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 
-namespace Car_App.Tests.Controller
+namespace Car_App.Tests.CarIntegrationTest
 {
-    public class CarControllerIntegrationTests : IClassFixture<WebApplicationFactory<Program>>
+    public class CarIntegrationTest : IClassFixture<WebApplicationFactory<Program>>
     {
         private readonly WebApplicationFactory<Program> _factory;
         private readonly HttpClient _client;
@@ -21,7 +21,7 @@ namespace Car_App.Tests.Controller
         private Guid CarId1 { get; set; }
         private Guid CarId5 { get; set; }
 
-        public CarControllerIntegrationTests(WebApplicationFactory<Program> factory)
+        public CarIntegrationTest(WebApplicationFactory<Program> factory)
         {
             _factory = factory;
 

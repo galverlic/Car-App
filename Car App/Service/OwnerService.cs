@@ -125,8 +125,7 @@ public class OwnerService : IOwnerService
         return query;
     }
 
-
-    public async Task<Owner> GetOwnerWithCarsByIdAsync(Guid id)
+     public async Task<Owner> GetOwnerWithCarsByIdAsync(Guid id)
     {
         return await _dbContext.Owners.Include(o => o.Cars).FirstOrDefaultAsync(o => o.Id == id);
     }
@@ -161,9 +160,6 @@ public class OwnerService : IOwnerService
         await _dbContext.Owners.AddAsync(owner);
         await _dbContext.SaveChangesAsync();
     }
-
-
-
 
     public async Task<AuthenticateResponseDto> AuthenticateAsync(AuthenticateRequestDto model)
     {
