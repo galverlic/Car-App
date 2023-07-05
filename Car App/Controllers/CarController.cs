@@ -54,13 +54,13 @@ namespace Car_App.Controllers
         /// Create a new car
         /// </summary>
         /// <returns>New car added to the database</returns>
-
         [HttpPost]
         public async Task<ActionResult> CreateNewCar([FromBody] CarDto newCar)
         {
             await _carService.CreateNewCarAsync(newCar);
             return Created("", newCar);
         }
+
         /// <summary>
         /// Delete a car
         /// </summary>
@@ -79,7 +79,6 @@ namespace Car_App.Controllers
         /// Update a car
         /// </summary>
         /// <returns>Updates a car</returns>
-
         [HttpPut("update/{id}")]
         public async Task<ActionResult> UpdateCar([FromBody] CarDto newCar, Guid id)
         {

@@ -25,7 +25,6 @@ namespace Car_App.Controllers
             _ownerService = ownerService;
         }
 
-        //GET ALL OWNERS
 
         /// <summary>
         /// Gets all owners
@@ -39,7 +38,6 @@ namespace Car_App.Controllers
             return Ok(result);
         }
 
-        // GET A CAR BY IT'S OWNER'S ID
         /// <summary>
         /// Gets all cars for an owner
         /// </summary>
@@ -55,7 +53,6 @@ namespace Car_App.Controllers
                 return NotFound();
             }
 
-            // daj to v service
             var CarDtos = owner.Cars.Select(car => new CarDto
             {
                 Title = car.Title,
@@ -71,13 +68,11 @@ namespace Car_App.Controllers
             return CarDtos;
         }
 
-        // REGISTER NEW OWNER
 
         /// <summary>
         /// Register a new owner
         /// </summary>
         /// <returns>The details of the newly created owner</returns>
-
         [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterOwnerDto registerOwnerDto)
@@ -85,8 +80,6 @@ namespace Car_App.Controllers
             await _ownerService.RegisterAsync(registerOwnerDto);
             return Ok();
         }
-
-        // LOGIN OWNER
 
         /// <summary>
         /// Login with username and password
@@ -100,8 +93,6 @@ namespace Car_App.Controllers
             var response = await _ownerService.AuthenticateAsync(model);
             return Ok(response);
         }
-
-        // DELETE OWNER BY ID
 
         /// <summary>
         /// Deletes an owner by ID
@@ -121,12 +112,9 @@ namespace Car_App.Controllers
             }
         }
 
-        // UPDATE OWNER BY ID
-
         /// <summary>
         /// Updates an owner by ID
         /// </summary>
-
         /// <returns>A status code indicating the result of the operation</returns>
         [HttpPut("update-owner/{id}")]
         public async Task<ActionResult> UpdateOwner([FromBody] OwnerDto newOwner, Guid id)

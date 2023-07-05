@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
+using Xunit;
 
 namespace Car_App.Tests.CarIntegrationTest
 {
@@ -18,7 +19,6 @@ namespace Car_App.Tests.CarIntegrationTest
         private readonly HttpClient _client;
         private readonly IOwnerService _userService;
         private readonly DatabaseContext _dbContext;
-        private Guid CarId1 { get; set; }
         private Guid CarId5 { get; set; }
 
         public CarIntegrationTest(WebApplicationFactory<Program> factory)
@@ -123,7 +123,7 @@ namespace Car_App.Tests.CarIntegrationTest
                 YearOfRegistration = 2020,
                 YearOfFirstService = 2021
             };
-            CarId1 = car1.Id;
+
             var car2 = new Car()
             {
                 Id = Guid.NewGuid(),
@@ -289,7 +289,7 @@ namespace Car_App.Tests.CarIntegrationTest
         public async Task DeleteCar_ReturnsCarNotFoundResponse()
         {
             var id = Guid.NewGuid();
-            var response = await _client.DeleteAsync($"/car/{id}"); // Adjusted to follow the routing convention
+            var response = await _client.DeleteAsync($"/car/delete/{id}");
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }

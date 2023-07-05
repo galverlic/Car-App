@@ -6,12 +6,13 @@ using Car_App.Data.Models.Sorting;
 using Car_App.Service.Interface;
 using Car_App.Services;
 using Microsoft.EntityFrameworkCore;
+using Xunit;
 
-namespace Car_App.Tests
+namespace CarApp.UnitTests.Service.CarServiceTests
 {
     public class CarServiceTests
     {
-        private  readonly ICarService _carService;
+        private readonly ICarService _carService;
         private readonly DatabaseContext _dbContext;
 
         public CarServiceTests()
@@ -339,13 +340,5 @@ namespace Car_App.Tests
             Assert.Equal(updatedCarDto.Power, updatedCar.Power);
             Assert.Equal(updatedCarDto.OwnerId, updatedCar.OwnerId);
         }
-
-        //        public CarServiceTests()
-        //        {
-        //            // Mock the database context for CarService
-        //            _mockContext = new Mock<DatabaseContext>();
-        //            _carService = new CarService(_mockContext.Object);
-        //        }
-
     }
 }

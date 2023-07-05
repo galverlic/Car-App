@@ -6,8 +6,9 @@ using Car_App.Data.Models.Sorting;
 using Car_App.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Xunit;
 
-namespace CarApp.UnitTests.Controller
+namespace CarApp.UnitTests.Controller.OwnerControllerTests
 {
     public class OwnerControllerTests
     {

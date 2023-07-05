@@ -6,8 +6,9 @@ using Car_App.Data.Models.Sorting;
 using Car_App.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Xunit;
 
-namespace CarApp.Tests.Controller
+namespace CarApp.UnitTests.Controller.CarControllerTests
 {
     public class CarControllerTests
     {
@@ -28,11 +29,11 @@ namespace CarApp.Tests.Controller
                 TotalPages = 1,
                 CurrentPage = 1,
                 Results = new List<Car>
-                {
-                    new Car { Id = Guid.NewGuid(), OwnerId = Guid.NewGuid(), Make = "Toyota", Model = "Camry", Year = 2018 },
-                    new Car { Id = Guid.NewGuid(), OwnerId = Guid.NewGuid(), Make = "Honda", Model = "Civic", Year = 2017 },
-                    new Car { Id = Guid.NewGuid(), OwnerId = Guid.NewGuid(), Make = "Ford", Model = "F-150", Year = 2019 },
-                }
+            {
+                new Car { Id = Guid.NewGuid(), OwnerId = Guid.NewGuid(), Make = "Toyota", Model = "Camry", Year = 2018 },
+                new Car { Id = Guid.NewGuid(), OwnerId = Guid.NewGuid(), Make = "Honda", Model = "Civic", Year = 2017 },
+                new Car { Id = Guid.NewGuid(), OwnerId = Guid.NewGuid(), Make = "Ford", Model = "F-150", Year = 2019 },
+            }
             };
 
             var paginationParameters = new PaginationParameters { Page = 1, PageSize = 10 };
